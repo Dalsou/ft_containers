@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 10:53:07 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/17 14:07:50 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/17 14:52:30 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ namespace ft {
 			allocator_type			_alloc;
 			size_type				_size;
 			size_type				_capacity;
-			const static size_type	_max_size;
 
 		public :
 
@@ -285,7 +284,7 @@ namespace ft {
 
 			// max_size
 			size_type	max_size() const {
-				return this->_max_size;
+				return this->_alloc.max_size();
 			};
 
 			// resize
@@ -599,9 +598,6 @@ namespace ft {
 	template <class T, class Alloc>
 	void	swap(vector<T, Alloc> &x, vector<T, Alloc> &y) { x.swap(y); }
 	
-	template <typename T, typename Alloc>
-	const typename vector<T, Alloc>::size_type vector<T, Alloc>::_max_size =
-	std::numeric_limits<difference_type>::max() / (sizeof(value_type) / 2 ?: 1);
 } // ft namespace
 
 #endif
