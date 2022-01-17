@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 10:53:07 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/17 14:52:30 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/17 15:13:20 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ namespace ft {
 
 	template< typename T, typename Alloc = std::allocator<T> >
 	class vector {
+
+		// ******************** Aliases ******************** //
 		
 		public:
-
 			typedef T											value_type;
 			typedef Alloc										allocator_type;
 			typedef std::ptrdiff_t								difference_type;
@@ -33,6 +34,8 @@ namespace ft {
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
 
+		// ******************** Attributes ******************** //
+
 		private:
 			value_type*				_data;
 			allocator_type			_alloc;
@@ -40,6 +43,8 @@ namespace ft {
 			size_type				_capacity;
 
 		public :
+
+		// ******************** Iterator class ******************** //
 
 		class iterator : public random_iterator<value_type> {
 		
@@ -118,6 +123,8 @@ namespace ft {
 			
 		}; // class iterator
 
+		// ******************** Const Iterator class ******************** //
+
 		class const_iterator : public random_iterator<value_type> {
 		
 			protected:
@@ -194,6 +201,8 @@ namespace ft {
 				friend class vector;
 
 		}; // class const_iterator
+
+		// ******************** Reverse & const reverse iterators ******************** //
 	
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
@@ -206,14 +215,14 @@ namespace ft {
 
 			// Destructor
 			virtual ~vector() {
-				this->_destroy_data();
+				this->destroyData();
 			};
 
 			// Constructor
 			explicit vector(size_type size, const value_type& value = value_type(),
 							const allocator_type& alloc = allocator_type()) :
 			_data(NULL), _alloc(alloc), _size(0), _capacity(0) {
-				this->_create_data(size, value);
+				this->createData(size, value);
 			};
 
 			// Constructor Iterator Range
@@ -221,7 +230,7 @@ namespace ft {
 			vector(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
 					Ite last, const allocator_type& alloc = allocator_type()) :
 			_data(NULL), _alloc(alloc), _size(0), _capacity(0) {
-				this->_create_data(ft::itlen(first, last), first, last);
+				this->createData(this->getItLen(first, last), first, last);
 			};
 	
 			// Copy constructor
@@ -236,8 +245,8 @@ namespace ft {
 					return *this;
 				const_iterator first = op.begin();
 				const_iterator last = op.end();
-				size_type len = ft::itlen(first, last);
-				this->_create_data((len > this->_capacity) ? len : this->_capacity, first, last);
+				size_type len = this->getItLen(first, last);
+				this->createData((len > this->_capacity) ? len : this->_capacity, first, last);
 				return *this;
 			};
 
@@ -327,7 +336,7 @@ namespace ft {
 					throw std::length_error("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
 				if (this->capacity() >= n)
 					return ;
-				this->_create_data(n, this->begin(), this->end());
+				this->createData(n, this->begin(), this->end());
 			};
 
 			// ******************** Element Access ******************** //
@@ -381,7 +390,7 @@ namespace ft {
 			// assign
 			void	assign(size_type n, const value_type &val) {
 				if (this->_capacity < n)
-					this->_create_data(n, val);
+					this->createData(n, val);
 				else {
 					this->clear();
 					while (this->_size < n) {
@@ -393,9 +402,9 @@ namespace ft {
 
 			template <class Ite>
 			void	assign(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first, Ite last) {
-				size_type size = ft::itlen(first, last);
+				size_type size = this->getItLen(first, last);
 				if (this->_capacity < size)
-					this->_create_data(size, first, last);
+					this->createData(size, first, last);
 				else {
 					this->clear();
 					while (first != last) {
@@ -454,7 +463,7 @@ namespace ft {
 				iterator				old_end;
 				iterator				end;
 
-				this->resize(this->_size + (ft::itlen(first, last)));
+				this->resize(this->_size + (this->getItLen(first, last)));
 				end = this->end();
 				position = this->begin() + i;
 				old_end = this->begin() + old_end_i;
@@ -474,7 +483,7 @@ namespace ft {
 			iterator	erase(iterator first, iterator last) {
 				iterator	tmp = first;
 				iterator	end = this->end();
-				size_type	deleted = ft::itlen(first, last);
+				size_type	deleted = this->getItLen(first, last);
 
 				while (last != end) {
 					*first = *last;
@@ -493,9 +502,9 @@ namespace ft {
 			void	swap(vector &x) {
 				vector<T, Alloc> tmp;
 
-				tmp._cpy_content(x);
-				x._cpy_content(*this);
-				this->_cpy_content(tmp);
+				tmp.copyContent(x);
+				x.copyContent(*this);
+				this->copyContent(tmp);
 			};
 
 			// clear
@@ -508,11 +517,22 @@ namespace ft {
 
 		private :
 
+			//get it len
+			template <class Ite>
+			size_type	getItLen(Ite first, Ite last) {
+				size_type	i = 0;
+				while (first != last){
+					++first;
+					++i;
+				}
+				return (i);
+			};
+
 			// create data
 			template <class Ite>
-			void	_create_data(difference_type capacity, Ite first, Ite last) {
+			void	createData(difference_type capacity, Ite first, Ite last) {
 				vector<T, Alloc> res;
-				difference_type len = ft::itlen(first, last);
+				difference_type len = this->getItLen(first, last);
 
 				if (capacity < len || capacity < 0)
 					__APPLE__ ? throw std::length_error("vector") : throw std::bad_alloc();
@@ -521,12 +541,12 @@ namespace ft {
 				res._data = res._alloc.allocate(capacity);
 				for (size_type i = 0; first != last; ++first)
 					res._alloc.construct(&res._data[i++], *first);
-				this->_destroy_data();
-				this->_cpy_content(res);
+				this->destroyData();
+				this->copyContent(res);
 			};
 
-			void	_create_data(size_type size, const value_type &val = value_type()) {
-				this->_destroy_data();
+			void	createData(size_type size, const value_type &val = value_type()) {
+				this->destroyData();
 				this->_data = this->_alloc.allocate(size);
 				for (size_type i = 0; i < size; ++i)
 					this->_alloc.construct(&this->_data[i], val);
@@ -534,7 +554,7 @@ namespace ft {
 			};
 
 			// destroy data	
-			void	_destroy_data() {
+			void	destroyData() {
 				if (!this->_data)
 					return ;
 				this->clear();
@@ -542,9 +562,9 @@ namespace ft {
 				this->_data = NULL; this->_size = 0; this->_capacity = 0;
 			};
 
-			// capy data
+			// copy data
 			template <class Ite, class Iterator>
-			static void	_cpy_data(Ite start, Iterator first, Iterator last) {
+			static void	copyData(Ite start, Iterator first, Iterator last) {
 				while (first != last) {
 					*start = *first;
 					++start;
@@ -553,12 +573,14 @@ namespace ft {
 			};
 
 			// copy content	
-			void	_cpy_content(vector &vct) {
-				this->_data = vct._data;
-				this->_alloc = vct._alloc;
-				this->_size = vct._size;
-				this->_capacity = vct._capacity;
-				vct._data = NULL; vct._size = 0; vct._capacity = 0;
+			void	copyContent(vector &vec) {
+				this->_data = vec._data;
+				this->_alloc = vec._alloc;
+				this->_size = vec._size;
+				this->_capacity = vec._capacity;
+				vec._data = NULL;
+				vec._size = 0;
+				vec._capacity = 0;
 			};
 
 	}; // class vector

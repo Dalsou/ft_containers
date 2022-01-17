@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:20:01 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/17 14:42:59 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/17 15:19:36 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,6 @@ namespace ft {
 		else if (first2 == last2)
 			return (false);
 		return (*first1 < *first2);
-	}
-
-	// Ite len
-	template <class Ite>
-	size_t	itlen(Ite first, Ite last) {
-		size_t	i = 0;
-
-		while (first != last)
-		{
-			++first;
-			++i;
-		}
-		return (i);
 	}
 }
 
