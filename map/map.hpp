@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 15:49:33 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/18 16:43:19 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/18 16:55:32 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,7 +266,7 @@ template < class Key,
 				return it;
 			};
 			
-			const_iterator	find(const key_type &k) const {
+			const_iterator	find(const key_type& k) const {
 				const_iterator	it = this->begin();
 				const_iterator	ite = this->end();
 
@@ -279,7 +279,7 @@ template < class Key,
 			};
 
 			//count
-			size_type		count(const key_type &k) const {
+			size_type		count(const key_type& k) const {
 				const_iterator	it = this->begin();
 				const_iterator	ite = this->end();
 				size_type		res = 0;
@@ -294,7 +294,7 @@ template < class Key,
 			};
 
 			// lower bound
-			iterator		lower_bound(const key_type &k) {
+			iterator		lower_bound(const key_type& k) {
 				iterator	it = this->begin();
 				iterator	ite = this->end();
 
@@ -306,7 +306,7 @@ template < class Key,
 				return it;
 			};
 
-			const_iterator	lower_bound(const key_type &k) const {
+			const_iterator	lower_bound(const key_type& k) const {
 				const_iterator	it = this->begin();
 				const_iterator	ite = this->end();
 
@@ -319,7 +319,7 @@ template < class Key,
 			};
 
 			// upper_bound
-			iterator		upper_bound(const key_type &k) {
+			iterator		upper_bound(const key_type& k) {
 				iterator	it = this->begin();
 				iterator	ite = this->end();
 
@@ -331,7 +331,7 @@ template < class Key,
 				return (it);
 			};
 
-			const_iterator	upper_bound(const key_type &k) const {
+			const_iterator	upper_bound(const key_type& k) const {
 				const_iterator	it = this->begin();
 				const_iterator	ite = this->end();
 
@@ -344,7 +344,7 @@ template < class Key,
 			};
 
 			//equal_range
-			pair<iterator,iterator>	equal_range(const key_type &k) {
+			pair<iterator,iterator>	equal_range(const key_type& k) {
 				pair<iterator, iterator> res;
 
 				res.first = this->lower_bound(k);
@@ -352,7 +352,7 @@ template < class Key,
 				return res;
 			};
 
-			pair<const_iterator,const_iterator>	equal_range(const key_type &k) const {
+			pair<const_iterator,const_iterator>	equal_range(const key_type& k) const {
 				pair<const_iterator, const_iterator> res;
 
 				res.first = this->lower_bound(k);
@@ -448,52 +448,52 @@ template < class Key,
 				delete rmNode;
 			};
 
-			bool	KeyEq(const key_type &k1, const key_type &k2) const {
+			bool	KeyEq(const key_type& k1, const key_type& k2) const {
 					return (!this->_key_cmp(k1, k2) && !this->_key_cmp(k2, k1));
 			};
 		
 	}; // class map
 
 	template <class Key, class T, class Compare, class Alloc>
-	bool	operator==(const map<Key, T, Compare, Alloc> &lhs,
-						const map<Key, T, Compare, Alloc> &rhs) {
+	bool	operator==(const map<Key, T, Compare, Alloc>& lhs,
+						const map<Key, T, Compare, Alloc>& rhs) {
 		if (lhs.size() != rhs.size())
 			return false;
 		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	bool	operator!=(const map<Key, T, Compare, Alloc> &lhs,
-						const map<Key, T, Compare, Alloc> &rhs) {
+	bool	operator!=(const map<Key, T, Compare, Alloc>& lhs,
+						const map<Key, T, Compare, Alloc>& rhs) {
 		return !(lhs == rhs);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	bool	operator< (const map<Key, T, Compare, Alloc> &lhs,
-						const map<Key, T, Compare, Alloc> &rhs) {
+	bool	operator< (const map<Key, T, Compare, Alloc>& lhs,
+						const map<Key, T, Compare, Alloc>& rhs) {
 		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	bool	operator<=(const map<Key, T, Compare, Alloc> &lhs,
-						const map<Key, T, Compare, Alloc> &rhs) {
+	bool	operator<=(const map<Key, T, Compare, Alloc>& lhs,
+						const map<Key, T, Compare, Alloc>& rhs) {
 		return !(rhs < lhs);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	bool	operator> (const map<Key, T, Compare, Alloc> &lhs,
-						const map<Key, T, Compare, Alloc> &rhs) {
+	bool	operator> (const map<Key, T, Compare, Alloc>& lhs,
+						const map<Key, T, Compare, Alloc>& rhs) {
 		return (rhs < lhs);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	bool	operator>=(const map<Key, T, Compare, Alloc> &lhs,
-						const map<Key, T, Compare, Alloc> &rhs) {
+	bool	operator>=(const map<Key, T, Compare, Alloc>& lhs,
+						const map<Key, T, Compare, Alloc>& rhs) {
 		return !(lhs < rhs);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
-	void	swap(map<Key, T, Compare, Alloc> &x, map<Key, T, Compare, Alloc> &y) {
+	void	swap(map<Key, T, Compare, Alloc>& x, map<Key, T, Compare, Alloc>& y) {
 		x.swap(y);
 	}
 
