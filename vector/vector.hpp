@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 10:53:07 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/18 15:13:51 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/18 16:21:29 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,6 @@ namespace ft {
 			typedef typename allocator_type::const_reference	const_reference;
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
-
-		// ******************** Attributes ******************** //
-
-		private:
-			value_type*				_data;
-			allocator_type			_alloc;
-			size_type				_size;
-			size_type				_capacity;
-
-		public :
 
 		// ******************** Iterator class ******************** //
 
@@ -206,6 +196,16 @@ namespace ft {
 	
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+
+		// ******************** Attributes ******************** //
+
+		private:
+			value_type*				_data;
+			allocator_type			_alloc;
+			size_type				_size;
+			size_type				_capacity;
+
+		public :
 
 		// ******************** Constructors & Destructor ******************** //
 
@@ -562,16 +562,6 @@ namespace ft {
 				this->_data = NULL; this->_size = 0; this->_capacity = 0;
 			};
 
-			// copy data
-			template <class Ite, class Iterator>
-			static void	copyData(Ite start, Iterator first, Iterator last) {
-				while (first != last) {
-					*start = *first;
-					++start;
-					++first;
-				}
-			};
-
 			// copy content	
 			void	copyContent(vector &vec) {
 				this->_data = vec._data;
@@ -586,39 +576,39 @@ namespace ft {
 	}; // class vector
 
 	template <class T, class Alloc>
-	bool	operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) {
+	bool	operator==(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
 	if (lhs.size() != rhs.size())
 		return false;
 	return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 }
 
 	template <class T, class Alloc>
-	bool	operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) {
+	bool	operator!=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
 		return !(lhs == rhs);
 	}
 
 	template <class T, class Alloc>
-	bool	operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) {
+	bool	operator<(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
 		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
 
 	template <class T, class Alloc>
-	bool	operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) {
+	bool	operator<=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
 		return !(rhs < lhs);
 	}
 
 	template <class T, class Alloc>
-	bool	operator>(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) {
+	bool	operator>(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
 		return (rhs < lhs);
 	}
 
 	template <class T, class Alloc>
-	bool	operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs) {
+	bool	operator>=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
 		return !(lhs < rhs);
 	}
 
 	template <class T, class Alloc>
-	void	swap(vector<T, Alloc> &x, vector<T, Alloc> &y) { x.swap(y); }
+	void	swap(vector<T, Alloc>& x, vector<T, Alloc>& y) { x.swap(y); }
 	
 } // ft namespace
 

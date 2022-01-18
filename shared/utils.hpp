@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:20:01 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/17 15:41:01 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/18 16:46:15 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,120 +66,49 @@ namespace ft {
 
 	// MAP
 
-	// struct choose<bool, true, false>
+	template <typename T>
+	struct	lstNode
+	{
+		T			data;
+		lstNode*	next;
+		lstNode*	prev;
 
-template <bool flag, class IsTrue, class IsFalse>
-struct choose;
+		lstNode(const T &src = T()) : 
+		data(src), next(this), prev(this) {};
+	};
 
-template <class IsTrue, class IsFalse>
-struct choose<true, IsTrue, IsFalse> {
-	typedef IsTrue type;
-};
+	template <typename T>
+	struct	mapNode
+	{
+		private:
+			bool _unused;
+			#if __APPLE__ == 0
+				int _unused_for_linux;
+			#endif
 
-template <class IsTrue, class IsFalse>
-struct choose<false, IsTrue, IsFalse> {
-	typedef IsFalse type;
-};
+		public:
+			T			data;
+			mapNode*	parent;
+			mapNode*	left;
+			mapNode*	right;
 
-template <typename T>
-struct	lstNode
-{
-	T			data;
-	lstNode		*next;
-	lstNode		*prev;
+			mapNode(const T &src = T()) :
+			data(src), parent(NULL), left(NULL), right(NULL) {};
+	};
 
-	lstNode(const T &src = T()) : data(src), next(this), prev(this) {};
-};
-
-template <typename T>
-struct	mapNode
-{
-	private:
-	bool _unused;
-	#if __APPLE__ == 0
-		int _unused_for_linux;
-	#endif
-
-	public:
-	T			data;
-	mapNode		*parent;
-	mapNode		*left;
-	mapNode		*right;
-
-	mapNode(const T &src = T()) : \
-		data(src), parent(NULL), left(NULL), right(NULL) {};
-};
-
-template <typename T>
-mapNode<T>	*farRight(mapNode<T> *node) {
-	while (node->right != NULL)
-		node = node->right;
-	return (node);
-}
-
-template <typename T>
-mapNode<T>	*farLeft(mapNode<T> *node) {
-	while (node->left != NULL)
-		node = node->left;
-	return (node);
-}
-
-// pair struct for ft::map
-
-template <class T1, class T2>
-struct	pair
-{
-	typedef T1		first_type;
-	typedef T2		second_type;
-
-	first_type		first;
-	second_type		second;
-
-	// Member functions
-
-	pair(void) : first(), second() { };
-	template<class U, class V>
-	pair(const pair<U, V> &src) : first(src.first), second(src.second) { };
-	pair(const first_type &a, const second_type &b) : first(a), second(b) { };
-
-	pair	&operator=(const pair &src) {
-		if (this == &src)
-			return (*this);
-		this->first = src.first;
-		this->second = src.second;
-		return (*this);
+	template <typename T>
+	mapNode<T>	*farRight(mapNode<T> *node) {
+		while (node->right != NULL)
+			node = node->right;
+		return (node);
 	}
-};
 
-template <class T1, class T2>
-bool operator==(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
-	return (lhs.first == rhs.first && lhs.second == rhs.second);
-}
-
-template <class T1, class T2>
-bool operator!=(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
-	return !(lhs == rhs);
-}
-
-template <class T1, class T2>
-bool operator< (const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
-	return lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second);
-}
-
-template <class T1, class T2>
-bool operator<=(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
-	return !(rhs < lhs);
-}
-
-template <class T1, class T2>
-bool operator> (const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
-	return (rhs < lhs);
-}
-
-template <class T1, class T2>
-bool operator>=(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
-	return !(lhs < rhs);
-}
+	template <typename T>
+	mapNode<T>	*farLeft(mapNode<T> *node) {
+		while (node->left != NULL)
+			node = node->left;
+		return (node);
+	}
 }
 
 #endif

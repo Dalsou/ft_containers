@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 15:49:33 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/18 14:48:41 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/18 16:43:19 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 #include "../shared/utils.hpp"
 #include "../shared/reverse_iterator.hpp"
+#include "pair.hpp"
 #include "map_iterator.hpp"
-#include <cmath>
 
 
 namespace ft {
@@ -30,33 +30,48 @@ template < class Key,
 
 		// ******************** Aliases ******************** //
 		public:
-			typedef Key											key_type;
-			typedef T											mapped_type;
-			typedef pair<const key_type, mapped_type>			value_type;
-			typedef Compare										key_compare;
-			class												value_compare;
-			typedef Alloc										allocator_type;
-			typedef typename allocator_type::reference			reference;
-			typedef typename allocator_type::const_reference	const_reference;
-			typedef typename allocator_type::pointer			pointer;
-			typedef typename allocator_type::const_pointer		const_pointer;
-			typedef std::ptrdiff_t								difference_type;
-			typedef std::size_t									size_type;
+			typedef Key												key_type;
+			typedef T												mapped_type;
+			typedef std::ptrdiff_t									difference_type;
+			typedef std::size_t										size_type;
+			typedef pair<const key_type, mapped_type>				value_type;
+			typedef Compare											key_compare;
+			typedef Alloc											allocator_type;
+			typedef typename allocator_type::reference				reference;
+			typedef typename allocator_type::const_reference		const_reference;
+			typedef typename allocator_type::pointer				pointer;
+			typedef typename allocator_type::const_pointer			const_pointer;
 
-			typedef ft::mapNode<value_type>						node_type;
-			typedef node_type*									node_ptr;
+			typedef ft::mapNode<value_type>							node_type;
+			typedef node_type*										node_ptr;
 
 			typedef ft::map_iterator<value_type, node_type>			iterator;
-			typedef ft::map_iterator<const value_type, node_type>		const_iterator;
-			typedef ft::reverse_iterator<iterator>				reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+			typedef ft::map_iterator<const value_type, node_type>	const_iterator;
+			typedef ft::reverse_iterator<iterator>					reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
+
+			class	value_compare {
+				public:
+					Compare _comp;
+
+					value_compare(Compare comp) :
+					_comp(comp) {};
+
+					typedef bool		result_type;
+					typedef value_type	first_argument_type;
+					typedef value_type	second_argument_type;
+					
+					bool	operator()(const value_type& x, const value_type& y) const {
+						return _comp(x.first, y.first);
+					}	
+			};
 
 		// ******************** Attributes ******************** //
 		private:
-			node_ptr											_data;
-			key_compare											_key_cmp;
-			allocator_type										_alloc;
-			size_type											_size;
+			node_ptr		_data;
+			key_compare		_key_cmp;
+			allocator_type	_alloc;
+			size_type		_size;
 
 		public :
 
@@ -181,7 +196,7 @@ template < class Key,
 
 				res.second = !this->count(val.first);
 				if (res.second == true)
-					this->_btree_add(new node_type(val));
+					this->BTreeAdd(new node_type(val));
 				res.first = this->find(val.first);
 				return res;
 			};
@@ -193,14 +208,14 @@ template < class Key,
 
 			void		erase(iterator first, iterator last) {
 				while (first != last)
-					this->_btree_rm((first++)._node);
+					this->BTreeRM((first++)._node);
 			};
 
 			size_type	erase(const key_type& k) {
 				iterator element = this->find(k);
 				if (element == this->end())
 					return 0;
-				this->_btree_rm(element._node);
+				this->BTreeRM(element._node);
 				return 1;
 			};
 
@@ -219,7 +234,7 @@ template < class Key,
 				if (this->_size == 0)
 					return ;
 				tmp->parent->right = NULL;
-				this->bTreeClear(this->_data);
+				this->BTreeClear(this->_data);
 				this->_data = tmp;
 				this->_size = 0;
 			};
@@ -244,7 +259,7 @@ template < class Key,
 				iterator ite = this->end();
 
 				while (it != ite) {
-					if (this->_key_eq(it->first, k))
+					if (this->KeyEq(it->first, k))
 						break ;
 					++it;
 				}
@@ -256,7 +271,7 @@ template < class Key,
 				const_iterator	ite = this->end();
 
 				while (it != ite) {
-					if (this->_key_eq(it->first, k))
+					if (this->KeyEq(it->first, k))
 						break;
 					++it;
 				}
@@ -270,7 +285,7 @@ template < class Key,
 				size_type		res = 0;
 
 				while (it != ite) {
-					if (this->_key_eq((it++)->first, k)) {
+					if (this->KeyEq((it++)->first, k)) {
 						++res;
 						break ;
 					}
@@ -369,42 +384,39 @@ template < class Key,
 				tmp = NULL;
 			};
 
-			void	bTreeClear(node_ptr node) {
+			void	BTreeClear(node_ptr node) {
 				if (node == NULL)
 					return ;
-				this->bTreeClear(node->left);
-				this->bTreeClear(node->right);
+				this->BTreeClear(node->left);
+				this->BTreeClear(node->right);
 				delete node;
 			};
 
-			void				_btree_add(node_ptr newNode) {
+			void	BTreeAdd(node_ptr newNode) {
 				node_ptr	*parent = &this->_data;
 				node_ptr	*node = &this->_data;
 				node_ptr	ghost = farRight(this->_data);
 				bool		side_left = -1;
 
 				++this->_size;
-				while (*node && *node != ghost)
-				{
+				while (*node && *node != ghost) {
 					parent = node;
 					side_left = this->_key_cmp(newNode->data.first, (*node)->data.first);
 					node = (side_left ? &(*node)->left : &(*node)->right);
 				}
-				if (*node == NULL)
-				{
+				if (*node == NULL) {
 					newNode->parent = (*parent);
 					*node = newNode;
 				}
-				else // if (*node == ghost)
-				{
+				else {
 					*node = newNode;
 					newNode->parent = ghost->parent;
-					ghost->parent = farRight(newNode); // Using farRight(newNode)
-					farRight(newNode)->right = ghost; // in case newNode isnt alone
+					ghost->parent = farRight(newNode);
+					farRight(newNode)->right = ghost;
 				}
 			};
 
-			void				_btree_rm(node_ptr rmNode) {
+			void	BTreeRM(node_ptr rmNode) {
 				node_ptr	replaceNode = NULL;
 				node_ptr	*rmPlace = &this->_data;
 
@@ -413,25 +425,21 @@ template < class Key,
 				rmPlace = (rmNode->parent->left == rmNode ? &rmNode->parent->left : &rmNode->parent->right);
 				if (rmNode->left == NULL && rmNode->right == NULL)
 					;
-				else if (rmNode->left == NULL) // left == NULL && right != NULL
+				else if (rmNode->left == NULL)
 					replaceNode = rmNode->right;
-				else // left != NULL && right ?= NULL
-				{
+				else {
 					replaceNode = farRight(rmNode->left);
 					if (replaceNode != rmNode->left)
 						if ((replaceNode->parent->right = replaceNode->left))
 							replaceNode->left->parent = replaceNode->parent;
 				}
-				if (replaceNode)
-				{
+				if (replaceNode) {
 					replaceNode->parent = rmNode->parent;
-					if (rmNode->left && rmNode->left != replaceNode)
-					{
+					if (rmNode->left && rmNode->left != replaceNode) {
 						replaceNode->left = rmNode->left;
 						replaceNode->left->parent = replaceNode;
 					}
-					if (rmNode->right && rmNode->right != replaceNode)
-					{
+					if (rmNode->right && rmNode->right != replaceNode) {
 						replaceNode->right = rmNode->right;
 						replaceNode->right->parent = replaceNode;
 					}
@@ -440,7 +448,7 @@ template < class Key,
 				delete rmNode;
 			};
 
-			bool	_key_eq(const key_type &k1, const key_type &k2) const {
+			bool	KeyEq(const key_type &k1, const key_type &k2) const {
 					return (!this->_key_cmp(k1, k2) && !this->_key_cmp(k2, k1));
 			};
 		
@@ -488,20 +496,6 @@ template < class Key,
 	void	swap(map<Key, T, Compare, Alloc> &x, map<Key, T, Compare, Alloc> &y) {
 		x.swap(y);
 	}
-
-	template <class Key, class T, class Compare, class Alloc>
-	class	map<Key, T, Compare, Alloc>::value_compare {
-		public:
-			Compare comp;
-			value_compare(Compare c) : comp(c) { };
-
-			typedef bool		result_type;
-			typedef value_type	first_argument_type;
-			typedef value_type	second_argument_type;
-			bool	operator()(const value_type &x, const value_type &y) const {
-			return comp(x.first, y.first);
-	}
-};
 
 } // namespace ft
 
