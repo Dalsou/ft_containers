@@ -6,16 +6,16 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 10:53:07 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/17 15:13:20 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/18 15:13:51 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-# include "utils.hpp"
-# include "random_iterator.hpp"
-# include "reverse_iterator.hpp"
+# include "../shared/utils.hpp"
+# include "../shared/random_iterator.hpp"
+# include "../shared/reverse_iterator.hpp"
 
 namespace ft {
 

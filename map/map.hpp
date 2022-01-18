@@ -1,0 +1,508 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.hpp                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/17 15:49:33 by afoulqui          #+#    #+#             */
+/*   Updated: 2022/01/18 14:48:41 by afoulqui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MAP_HPP
+#define MAP_HPP
+
+#include "../shared/utils.hpp"
+#include "../shared/reverse_iterator.hpp"
+#include "map_iterator.hpp"
+#include <cmath>
+
+
+namespace ft {
+
+template < class Key,
+		   class T,
+		   class Compare = std::less<Key>,
+		   class Alloc = std::allocator<pair<const Key, T> >
+		   >
+	class map {
+
+		// ******************** Aliases ******************** //
+		public:
+			typedef Key											key_type;
+			typedef T											mapped_type;
+			typedef pair<const key_type, mapped_type>			value_type;
+			typedef Compare										key_compare;
+			class												value_compare;
+			typedef Alloc										allocator_type;
+			typedef typename allocator_type::reference			reference;
+			typedef typename allocator_type::const_reference	const_reference;
+			typedef typename allocator_type::pointer			pointer;
+			typedef typename allocator_type::const_pointer		const_pointer;
+			typedef std::ptrdiff_t								difference_type;
+			typedef std::size_t									size_type;
+
+			typedef ft::mapNode<value_type>						node_type;
+			typedef node_type*									node_ptr;
+
+			typedef ft::map_iterator<value_type, node_type>			iterator;
+			typedef ft::map_iterator<const value_type, node_type>		const_iterator;
+			typedef ft::reverse_iterator<iterator>				reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+
+		// ******************** Attributes ******************** //
+		private:
+			node_ptr											_data;
+			key_compare											_key_cmp;
+			allocator_type										_alloc;
+			size_type											_size;
+
+		public :
+
+		// ******************** Constructors & Destructor ******************** //
+			
+			// Constructor
+			explicit map(const key_compare& comp = key_compare(),
+							const allocator_type& alloc = allocator_type()) :
+			_data(), _key_cmp(comp), _alloc(alloc), _size(0) {
+				this->_data = new node_type;
+			};
+
+			// Destructor
+			virtual ~map(void) {
+				this->clear();
+				delete this->_data;
+			};
+			
+			// Range constructor
+			template <class Ite>
+			map(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
+					Ite last, const key_compare& comp = key_compare(),
+						const allocator_type& alloc = allocator_type()) :
+			_data(), _key_cmp(comp), _alloc(alloc), _size(0) {
+				this->_data = new node_type;
+				this->createData(first, last);
+			};
+			
+			// Copy constrcutor
+			map(const map &src) :
+			_data(), _key_cmp(key_compare()), _alloc(allocator_type()), _size(0) {
+				this->_data = new node_type;
+				*this = src;
+			};
+
+			// Assignment operator
+			map& operator=(map const &op) {
+				if (&op == this)
+					return *this;
+				this->clear();
+				this->createData(op.begin(), op.end());
+				return *this;
+			};
+
+		// ******************** Iterators ******************** //
+
+			// begin
+			iterator				begin(void) {
+				return iterator(farLeft(this->_data));
+			};
+			const_iterator			begin(void) const {
+				return const_iterator(farLeft(this->_data));
+			};
+
+			//end
+			iterator				end(void) {
+				return iterator(farRight(this->_data));
+			};
+			const_iterator			end(void) const {
+				return const_iterator(farRight(this->_data));
+			};
+
+			//rbegin
+			reverse_iterator		rbegin(void) {
+				return reverse_iterator(this->end());
+			};
+			const_reverse_iterator	rbegin(void) const {
+				return const_reverse_iterator(this->end());
+			};
+
+			//rend
+			reverse_iterator		rend(void) {
+				return reverse_iterator(this->begin());
+			};
+			const_reverse_iterator	rend(void) const {
+				return const_reverse_iterator(this->begin());
+			};
+
+		// ******************** Capacity ******************** //
+
+			// capacity
+			bool		empty(void) const {
+				if (this->_size == 0)
+					return true;
+				return false;
+			};
+
+			// size
+			size_type	size(void) const {
+				return this->_size;
+			};
+
+			//max_size
+			size_type	max_size(void) const {
+				return std::numeric_limits<difference_type>::max() / (sizeof(node_type) / 2 ?: 1);
+			};
+
+		// ******************** Element Access ******************** //
+
+			//operator[]
+			mapped_type	&operator[](const key_type& k) {
+				return (this->insert(value_type(k, mapped_type()))).first->second;
+			};
+
+		// ******************** Modifiers ******************** //
+
+			//insert
+			iterator	insert(iterator position, const value_type& val) {
+				static_cast<void>(position);
+				return this->insert(val).first;
+			};
+
+			template <class Ite>
+			void	insert(Ite first, Ite last) {
+				while (first != last) {
+					this->insert(*first++);
+				}
+			};
+
+			ft::pair<iterator, bool>	insert(const value_type &val) {
+				ft::pair<iterator, bool> res;
+
+				res.second = !this->count(val.first);
+				if (res.second == true)
+					this->_btree_add(new node_type(val));
+				res.first = this->find(val.first);
+				return res;
+			};
+
+			// erase
+			void		erase(iterator position) {
+				this->erase(position++, position);
+			};
+
+			void		erase(iterator first, iterator last) {
+				while (first != last)
+					this->_btree_rm((first++)._node);
+			};
+
+			size_type	erase(const key_type& k) {
+				iterator element = this->find(k);
+				if (element == this->end())
+					return 0;
+				this->_btree_rm(element._node);
+				return 1;
+			};
+
+			// swap
+			void	swap(map& x) {
+				map	tmp;
+
+				tmp.copyContent(x);
+				x.copyContent(*this);
+				this->copyContent(tmp);
+			};
+
+			//clear
+			void	clear() {
+				node_ptr	tmp = this->end()._node;
+				if (this->_size == 0)
+					return ;
+				tmp->parent->right = NULL;
+				this->bTreeClear(this->_data);
+				this->_data = tmp;
+				this->_size = 0;
+			};
+
+		// ******************** Observers ******************** //
+
+			// key_comp
+			key_compare	key_comp(void) const {
+				return key_compare();
+			};
+
+			// value_comp
+			value_compare	value_comp(void) const {
+				return value_compare(key_compare());
+			};
+
+		// ******************** Operations ******************** //
+		
+			// find
+			iterator		find(const key_type &k) {
+				iterator it = this->begin();
+				iterator ite = this->end();
+
+				while (it != ite) {
+					if (this->_key_eq(it->first, k))
+						break ;
+					++it;
+				}
+				return it;
+			};
+			
+			const_iterator	find(const key_type &k) const {
+				const_iterator	it = this->begin();
+				const_iterator	ite = this->end();
+
+				while (it != ite) {
+					if (this->_key_eq(it->first, k))
+						break;
+					++it;
+				}
+				return it;
+			};
+
+			//count
+			size_type		count(const key_type &k) const {
+				const_iterator	it = this->begin();
+				const_iterator	ite = this->end();
+				size_type		res = 0;
+
+				while (it != ite) {
+					if (this->_key_eq((it++)->first, k)) {
+						++res;
+						break ;
+					}
+				}
+				return res;
+			};
+
+			// lower bound
+			iterator		lower_bound(const key_type &k) {
+				iterator	it = this->begin();
+				iterator	ite = this->end();
+
+				while (it != ite) {
+					if (!this->_key_cmp(it->first, k))
+						break ;
+					++it;
+				}
+				return it;
+			};
+
+			const_iterator	lower_bound(const key_type &k) const {
+				const_iterator	it = this->begin();
+				const_iterator	ite = this->end();
+
+				while (it != ite) {
+					if (!this->_key_cmp(it->first, k))
+						break ;
+					++it;
+				}
+				return it;
+			};
+
+			// upper_bound
+			iterator		upper_bound(const key_type &k) {
+				iterator	it = this->begin();
+				iterator	ite = this->end();
+
+				while (it != ite) {
+					if (this->_key_cmp(k, it->first))
+						break ;
+					++it;
+				}
+				return (it);
+			};
+
+			const_iterator	upper_bound(const key_type &k) const {
+				const_iterator	it = this->begin();
+				const_iterator	ite = this->end();
+
+				while (it != ite) {
+					if (this->_key_cmp(k, it->first))
+						break ;
+					++it;
+				}
+				return (it);
+			};
+
+			//equal_range
+			pair<iterator,iterator>	equal_range(const key_type &k) {
+				pair<iterator, iterator> res;
+
+				res.first = this->lower_bound(k);
+				res.second = this->upper_bound(k);
+				return res;
+			};
+
+			pair<const_iterator,const_iterator>	equal_range(const key_type &k) const {
+				pair<const_iterator, const_iterator> res;
+
+				res.first = this->lower_bound(k);
+				res.second = this->upper_bound(k);
+				return res;
+			};
+
+		private :
+
+			void	createData(size_type size, const value_type& val = value_type()) {
+				(void)size;
+				(void)val;
+			};
+
+			template <class Ite>
+			void	createData(Ite first, Ite last) {
+				this->insert(first, last);
+			};
+			
+			void	copyContent(map& src) {
+				this->clear();
+				node_ptr tmp = this->_data;
+
+				this->_data = src._data;
+				this->_key_cmp = src._key_cmp;
+				this->_alloc = src._alloc;
+				this->_size = src._size;
+				src._data = tmp; src._size = 0;
+				tmp = NULL;
+			};
+
+			void	bTreeClear(node_ptr node) {
+				if (node == NULL)
+					return ;
+				this->bTreeClear(node->left);
+				this->bTreeClear(node->right);
+				delete node;
+			};
+
+			void				_btree_add(node_ptr newNode) {
+				node_ptr	*parent = &this->_data;
+				node_ptr	*node = &this->_data;
+				node_ptr	ghost = farRight(this->_data);
+				bool		side_left = -1;
+
+				++this->_size;
+				while (*node && *node != ghost)
+				{
+					parent = node;
+					side_left = this->_key_cmp(newNode->data.first, (*node)->data.first);
+					node = (side_left ? &(*node)->left : &(*node)->right);
+				}
+				if (*node == NULL)
+				{
+					newNode->parent = (*parent);
+					*node = newNode;
+				}
+				else // if (*node == ghost)
+				{
+					*node = newNode;
+					newNode->parent = ghost->parent;
+					ghost->parent = farRight(newNode); // Using farRight(newNode)
+					farRight(newNode)->right = ghost; // in case newNode isnt alone
+				}
+			};
+
+			void				_btree_rm(node_ptr rmNode) {
+				node_ptr	replaceNode = NULL;
+				node_ptr	*rmPlace = &this->_data;
+
+				--this->_size;
+				if (rmNode->parent)
+				rmPlace = (rmNode->parent->left == rmNode ? &rmNode->parent->left : &rmNode->parent->right);
+				if (rmNode->left == NULL && rmNode->right == NULL)
+					;
+				else if (rmNode->left == NULL) // left == NULL && right != NULL
+					replaceNode = rmNode->right;
+				else // left != NULL && right ?= NULL
+				{
+					replaceNode = farRight(rmNode->left);
+					if (replaceNode != rmNode->left)
+						if ((replaceNode->parent->right = replaceNode->left))
+							replaceNode->left->parent = replaceNode->parent;
+				}
+				if (replaceNode)
+				{
+					replaceNode->parent = rmNode->parent;
+					if (rmNode->left && rmNode->left != replaceNode)
+					{
+						replaceNode->left = rmNode->left;
+						replaceNode->left->parent = replaceNode;
+					}
+					if (rmNode->right && rmNode->right != replaceNode)
+					{
+						replaceNode->right = rmNode->right;
+						replaceNode->right->parent = replaceNode;
+					}
+				}
+				*rmPlace = replaceNode;
+				delete rmNode;
+			};
+
+			bool	_key_eq(const key_type &k1, const key_type &k2) const {
+					return (!this->_key_cmp(k1, k2) && !this->_key_cmp(k2, k1));
+			};
+		
+	}; // class map
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool	operator==(const map<Key, T, Compare, Alloc> &lhs,
+						const map<Key, T, Compare, Alloc> &rhs) {
+		if (lhs.size() != rhs.size())
+			return false;
+		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool	operator!=(const map<Key, T, Compare, Alloc> &lhs,
+						const map<Key, T, Compare, Alloc> &rhs) {
+		return !(lhs == rhs);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool	operator< (const map<Key, T, Compare, Alloc> &lhs,
+						const map<Key, T, Compare, Alloc> &rhs) {
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool	operator<=(const map<Key, T, Compare, Alloc> &lhs,
+						const map<Key, T, Compare, Alloc> &rhs) {
+		return !(rhs < lhs);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool	operator> (const map<Key, T, Compare, Alloc> &lhs,
+						const map<Key, T, Compare, Alloc> &rhs) {
+		return (rhs < lhs);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool	operator>=(const map<Key, T, Compare, Alloc> &lhs,
+						const map<Key, T, Compare, Alloc> &rhs) {
+		return !(lhs < rhs);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	void	swap(map<Key, T, Compare, Alloc> &x, map<Key, T, Compare, Alloc> &y) {
+		x.swap(y);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	class	map<Key, T, Compare, Alloc>::value_compare {
+		public:
+			Compare comp;
+			value_compare(Compare c) : comp(c) { };
+
+			typedef bool		result_type;
+			typedef value_type	first_argument_type;
+			typedef value_type	second_argument_type;
+			bool	operator()(const value_type &x, const value_type &y) const {
+			return comp(x.first, y.first);
+	}
+};
+
+} // namespace ft
+
+#endif
