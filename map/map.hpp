@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 15:49:33 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/19 17:43:34 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/19 18:13:26 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ template < class Key,
 
 				res.second = !this->count(val.first);
 				if (res.second == true)
-					this->BTreeAdd(new node_type(val));
+					this->_newNode(new node_type(val));
 				res.first = this->find(val.first);
 				return res;
 			};
@@ -208,14 +208,14 @@ template < class Key,
 
 			void		erase(iterator first, iterator last) {
 				while (first != last)
-					this->BTreeRM((first++)._node);
+					this->_destroyNode((first++)._node);
 			};
 
 			size_type	erase(const key_type& k) {
 				iterator element = this->find(k);
 				if (element == this->end())
 					return 0;
-				this->BTreeRM(element._node);
+				this->_destroyNode(element._node);
 				return 1;
 			};
 
@@ -234,7 +234,13 @@ template < class Key,
 				if (this->_size == 0)
 					return ;
 				tmp->parent->right = NULL;
-				this->BTreeClear(this->_data);
+				if (this->_data) {
+					if (this->_data->left)
+						delete this->_data->left;
+					if (this->_data->right)
+						delete this->_data->right;
+					delete this->_data;
+				}
 				this->_data = tmp;
 				this->_size = 0;
 			};
@@ -259,7 +265,7 @@ template < class Key,
 				iterator ite = this->end();
 
 				while (it != ite) {
-					if (this->KeyEq(it->first, k))
+					if (!(this->_key_cmp(it->first, k)) && !(this->_key_cmp(k, it->first)))
 						break ;
 					++it;
 				}
@@ -271,7 +277,7 @@ template < class Key,
 				const_iterator	ite = this->end();
 
 				while (it != ite) {
-					if (this->KeyEq(it->first, k))
+					if (!(this->_key_cmp(it->first, k)) && !(this->_key_cmp(k, it->first)))
 						break;
 					++it;
 				}
@@ -285,10 +291,11 @@ template < class Key,
 				size_type		res = 0;
 
 				while (it != ite) {
-					if (this->KeyEq((it++)->first, k)) {
+					if (!(this->_key_cmp(it->first, k)) && !(this->_key_cmp(k, it->first))) {
 						++res;
 						break ;
 					}
+					it++;
 				}
 				return res;
 			};
@@ -378,15 +385,7 @@ template < class Key,
 				tmp = NULL;
 			};
 
-			void	BTreeClear(node_ptr node) {
-				if (node == NULL)
-					return ;
-				this->BTreeClear(node->left);
-				this->BTreeClear(node->right);
-				delete node;
-			};
-
-			void	BTreeAdd(node_ptr newNode) {
+			void	_newNode(node_ptr newNode) {
 				node_ptr	*parent = &this->_data;
 				node_ptr	*node = &this->_data;
 				node_ptr	ghost = farRight(this->_data);
@@ -410,7 +409,7 @@ template < class Key,
 				}
 			};
 
-			void	BTreeRM(node_ptr rmNode) {
+			void	_destroyNode(node_ptr rmNode) {
 				node_ptr	replaceNode = NULL;
 				node_ptr	*rmPlace = &this->_data;
 
@@ -440,10 +439,6 @@ template < class Key,
 				}
 				*rmPlace = replaceNode;
 				delete rmNode;
-			};
-
-			bool	KeyEq(const key_type& k1, const key_type& k2) const {
-					return (!this->_key_cmp(k1, k2) && !this->_key_cmp(k2, k1));
 			};
 		
 	}; // class map
