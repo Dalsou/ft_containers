@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:20:01 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/18 16:46:15 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/19 17:11:28 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,51 +64,19 @@ namespace ft {
 		return (*first1 < *first2);
 	}
 
-	// MAP
+	template <class I> struct is_integral { static const bool value = false;};
+	template <> struct is_integral<bool> { static const bool value = true; };
+	template <> struct is_integral<char> { static const bool value = true; };
+	template <> struct is_integral<short int> { static const bool value = true; };
+	template <> struct is_integral<int> { static const bool value = true; };
+	template <> struct is_integral<long int> { static const bool value = true; };
+	template <> struct is_integral<long long int> { static const bool value = true; };
+	template <> struct is_integral<unsigned char> { static const bool value = true; };
+	template <> struct is_integral<unsigned short int> { static const bool value = true; };
+	template <> struct is_integral<unsigned int> { static const bool value = true; };
+	template <> struct is_integral<unsigned long int> { static const bool value = true; };
+	template <> struct is_integral<unsigned long long int> { static const bool value = true; };
 
-	template <typename T>
-	struct	lstNode
-	{
-		T			data;
-		lstNode*	next;
-		lstNode*	prev;
-
-		lstNode(const T &src = T()) : 
-		data(src), next(this), prev(this) {};
-	};
-
-	template <typename T>
-	struct	mapNode
-	{
-		private:
-			bool _unused;
-			#if __APPLE__ == 0
-				int _unused_for_linux;
-			#endif
-
-		public:
-			T			data;
-			mapNode*	parent;
-			mapNode*	left;
-			mapNode*	right;
-
-			mapNode(const T &src = T()) :
-			data(src), parent(NULL), left(NULL), right(NULL) {};
-	};
-
-	template <typename T>
-	mapNode<T>	*farRight(mapNode<T> *node) {
-		while (node->right != NULL)
-			node = node->right;
-		return (node);
-	}
-
-	template <typename T>
-	mapNode<T>	*farLeft(mapNode<T> *node) {
-		while (node->left != NULL)
-			node = node->left;
-		return (node);
-	}
-}
+} // namespace ft
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 15:49:33 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/18 16:55:32 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/19 17:43:34 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "../shared/utils.hpp"
 #include "../shared/reverse_iterator.hpp"
 #include "pair.hpp"
+#include "map_node.hpp"
 #include "map_iterator.hpp"
 
 
@@ -92,12 +93,11 @@ template < class Key,
 			
 			// Range constructor
 			template <class Ite>
-			map(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
-					Ite last, const key_compare& comp = key_compare(),
-						const allocator_type& alloc = allocator_type()) :
+			map(Ite first, Ite last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(),
+				typename enable_if<!is_integral<Ite>::value,Ite >::type = Ite()) :
 			_data(), _key_cmp(comp), _alloc(alloc), _size(0) {
 				this->_data = new node_type;
-				this->createData(first, last);
+				this->insert(first, last);
 			};
 			
 			// Copy constrcutor
@@ -112,7 +112,7 @@ template < class Key,
 				if (&op == this)
 					return *this;
 				this->clear();
-				this->createData(op.begin(), op.end());
+				this->insert(op.begin(), op.end());
 				return *this;
 			};
 
@@ -223,9 +223,9 @@ template < class Key,
 			void	swap(map& x) {
 				map	tmp;
 
-				tmp.copyContent(x);
-				x.copyContent(*this);
-				this->copyContent(tmp);
+				tmp._copyContent(x);
+				x._copyContent(*this);
+				this->_copyContent(tmp);
 			};
 
 			//clear
@@ -360,19 +360,13 @@ template < class Key,
 				return res;
 			};
 
+			allocator_type	get_allocator() const {
+				return this->_alloc;
+			}
+
 		private :
-
-			void	createData(size_type size, const value_type& val = value_type()) {
-				(void)size;
-				(void)val;
-			};
-
-			template <class Ite>
-			void	createData(Ite first, Ite last) {
-				this->insert(first, last);
-			};
 			
-			void	copyContent(map& src) {
+			void	_copyContent(map& src) {
 				this->clear();
 				node_ptr tmp = this->_data;
 

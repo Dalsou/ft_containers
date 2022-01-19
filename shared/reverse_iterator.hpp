@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 15:42:27 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/14 17:51:47 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/19 16:55:14 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define REVERSE_ITERATOR_HPP
 
 #include "utils.hpp"
+#include "iterator_traits.hpp"
 #include "random_iterator.hpp"
 
 namespace ft {
@@ -26,10 +27,11 @@ namespace ft {
 			Iterator 								_base;
 
 		public : 
-			typedef Iterator						iterator_type;
-			typedef typename iter::difference_type	difference_type;
-			typedef typename iter::reference		reference;
-			typedef typename iter::pointer			pointer;
+			typedef Iterator												iterator_type;
+			typedef typename iterator_traits<Iterator>::difference_type		difference_type;
+			typedef typename iterator_traits<Iterator>::reference			reference;
+			typedef typename iterator_traits<Iterator>::pointer				pointer;
+			typedef typename iterator_traits<Iterator>::value_type			value_type;
 
 			// Constructors & Destructor
 			reverse_iterator() : _base() {};

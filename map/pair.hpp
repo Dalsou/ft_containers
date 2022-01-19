@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 15:28:23 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/18 15:34:10 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/19 11:55:48 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,11 @@ namespace ft {
 	bool operator>=(const pair<T1, T2>& lhs, const pair<T1, T2>& rhs) {
 		return !(lhs < rhs);
 	}
+
+	template <class T1, class T2>
+  	pair<T1, T2> make_pair(T1 x, T2 y) {
+    	return (pair<T1, T2>(x, y));
+  	}
 
 } // namespace ft
 

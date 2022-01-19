@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 11:13:27 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/14 12:07:47 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/19 11:51:53 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ namespace ft {
 			/* ------------------------ ATTRIBUTE ----------------------- */
 			container_type 				_ctnr;
 
+		public :
 			// Copy Constructor
 			stack(const stack& src) : _ctnr(src._ctnr) {};
 
