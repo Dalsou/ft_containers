@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 11:13:27 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/19 11:51:53 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/20 11:20:09 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,41 +29,41 @@ namespace ft {
 
 		protected :
 			/* ------------------------ ATTRIBUTE ----------------------- */
-			container_type 				_ctnr;
+			container_type 				c;
 
 		public :
 			// Copy Constructor
-			stack(const stack& src) : _ctnr(src._ctnr) {};
+			stack(const stack& src) : c(src.c) {};
 
 			//Assignment Operator
 			stack& operator=(const stack& op) {
 				if (&op == this)
 					return (*this);
-				this->_ctnr = op._ctnr;
+				this->c = op.c;
 				return (*this);
 			};
 
 		public :
 
 			// Constructors & Destructor
-			explicit stack (const container_type& ctnr = container_type()) : _ctnr(ctnr) {};
+			explicit stack (const container_type& ctnr = container_type()) : c(ctnr) {};
 			~stack() {};
 
 			// Member Function Overloads
-			bool 				empty() const { return (_ctnr.empty()); };
-			size_type 			size() const { return (_ctnr.size()); };
-			value_type& 		top() { return (_ctnr.back()); };
-			const value_type& 	top() const { return (_ctnr.back()); };
-			void 				push (const value_type& val) { _ctnr.push_back(val); };
-			void 				pop() { _ctnr.pop_back(); };
+			bool 				empty() const { return (c.empty()); };
+			size_type 			size() const { return (c.size()); };
+			value_type& 		top() { return (c.back()); };
+			const value_type& 	top() const { return (c.back()); };
+			void 				push (const value_type& val) { c.push_back(val); };
+			void 				pop() { c.pop_back(); };
 
 			// Non-Member Function Overloads
 			friend bool operator==(const stack<T, Container>& lhs, const stack<T, Container>& rhs) {
-				return (lhs._ctnr == rhs._ctnr);
+				return (lhs.c == rhs.c);
 			}
 
 			friend bool operator<(const stack<T, Container>& lhs, const stack<T, Container>& rhs) {
-				return (lhs._ctnr < rhs._ctnr);
+				return (lhs.c < rhs.c);
 			}
 
 	};

@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 10:53:07 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/19 17:53:34 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/21 14:40:29 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ namespace ft {
 
 			// Destructor
 			virtual ~vector() {
-				this->_destroyData();
+				this->_alloc.deallocate(this->_data, this->_capacity);
 			};
 
 			// Constructor
@@ -296,25 +296,20 @@ namespace ft {
 			};
 
 			// resize
-			void	resize(size_type size, value_type val = value_type()) {
-				if (this->_size > size) {
-					while (this->_size > size) {
-						this->_alloc.destroy(&this->_data[--this->_size]);
-					}	
-				}
-				else {
-					size_type const &lambda = (__APPLE__ ? this->_capacity : this->_size);
-
-					if (this->_capacity >= size)
-						;
-					else if (lambda * 2 >= size)
-						this->reserve(lambda * 2);
-					else
-						this->reserve(size);
-					while (this->_size < size) {
-						this->_alloc.construct(&this->_data[this->_size++], val);
-					}
-				}
+			void	resize(size_type n, value_type val = value_type()) {
+                if (n > this->_size) {
+                    if (n > this->_capacity) {
+                        reserve(n);
+                        for (; this->_size < n ; this->_size++)
+                            this->_data[this->_size] = val;
+                    }
+                    else
+                        for (; this->_size < n ; this->_size++)
+                            this->_data[this->_size] = val;
+                }   
+                else
+                    for (size_t i = this->_size; i > n; i--)
+                        this->_data[this->_size--].~value_type();
 			};
 
 			// capacity
@@ -331,11 +326,16 @@ namespace ft {
 
 			// reserve
 			void	reserve(size_type n) {
-				if (this->max_size() < n)
-					throw std::length_error("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
-				if (this->capacity() >= n)
-					return ;
-				this->_createData(n, this->begin(), this->end());
+				if (n > max_size())
+                    throw std::length_error("vector");
+                if (n <= this->_capacity)
+				    return ;
+                pointer tmp = this->_alloc.allocate(n);
+                for (size_type i = 0; i < this->_size; ++i)
+                    _alloc.construct(&tmp[i], this->_data[i]);
+                this->~vector();
+                this->_capacity = n;
+                this->_data = tmp;
 			};
 
 			// ******************** Element Access ******************** //
@@ -350,22 +350,14 @@ namespace ft {
 
 			// at
 			reference			at(size_type n) {
-				if (this->_size > n)
-					return (*this)[n];
-				std::ostringstream ostr;
-				ostr << "vector";
-				if (!__APPLE__)
-					ostr << "::_M_range_check: __n (which is " << n << ") >= this->size() (which is " << this->_size << ")";
-				throw std::out_of_range(ostr.str());
-			};
+                if (n > this->_size)
+                    throw std::out_of_range("Out of Range error");
+                return (this->_data[n]);
+            }
 			const_reference		at(size_type n) const {
-				if (this->_size > n)
-					return (*this)[n];
-				std::ostringstream ostr;
-				ostr << "vector";
-				if (!__APPLE__)
-					ostr << "::_M_range_check: __n (which is " << n << ") >= this->size() (which is " << this->_size << ")";
-				throw std::out_of_range(ostr.str());
+               if (n > this->_size)
+                    throw std::out_of_range("Out of Range error");
+                return (this->_data[n]);
 			};
 
 			// front
@@ -389,89 +381,89 @@ namespace ft {
 			// assign
 			void	assign(size_type n, const value_type &val) {
 				if (this->_capacity < n)
-					this->_createData(n, val);
-				else {
-					this->clear();
-					while (this->_size < n) {
-						this->_alloc.construct(&this->_data[this->_size], val);
-						this->_size++;
-					}
-				}
+					reserve(n);
+                for (size_type i = 0; i < n; i++)
+                    this->_alloc.construct(&this->_data[i], val);
+                this->_size = n;
 			};
 
 			template <class Ite>
 			void	assign(Ite first, Ite last,  typename enable_if<!is_integral<Ite>::value,Ite >::type = Ite()) {
-				size_type size = this->_getItLen(first, last);
-				if (this->_capacity < size)
-					this->_createData(size, first, last);
-				else {
-					this->clear();
-					while (first != last) {
-						this->_alloc.construct(&this->_data[this->_size], *first);
-						this->_size++;
-						first++;
-					}
-				}
+				size_type i = this->_getItLen(first, last);
+                reserve(i);
+				this->_size = 0;
+				while (first != last)
+					this->_alloc.construct(&this->_data[this->_size++], *first++);
 			};
 
 			// push_back
-			void	push_back(const value_type &val) {
-				if (this->_size == this->_capacity)
-					this->resize(this->_size + 1, val);
-				else {
-					this->_alloc.construct(&this->_data[this->_size], val);
-					this->_size++;
-				}
+			void	push_back(const value_type& val) {
+				if (this->_size == 0)
+					reserve(1);
+				else if (this->_capacity == this->_size)
+					reserve(this->_capacity * 2);
+				this->_alloc.construct(&this->_data[this->_size], val);
+				this->_size++;
 			};
 
 			// pop_back
 			void	pop_back() {
-				this->_alloc.destroy(&this->_data[this->_size]);
-				this->_size--;
+				if (this->_size) {
+					this->_alloc.destroy(&this->_data[this->_size]);
+					--this->_size;
+				}
 			};
 
 			// insert
 			iterator	insert(iterator position, const value_type &val) {
 				difference_type i = position - this->begin();
 				this->insert(position, 1, val);
-				return (iterator(this->begin() + i));
+				return iterator(&this->_data[i]);
 			};
 
 			void	insert(iterator position, size_type n, const value_type &val) {
-				difference_type const	i = position - this->begin();
-				difference_type const	old_end_i = this->end() - this->begin();
-				iterator				old_end;
-				iterator				end;
+				difference_type	d = position - this->begin();
+                long long j = d;
 
-				this->resize(this->_size + n);
-				end = this->end();
-				position = this->begin() + i;
-				old_end = this->begin() + old_end_i;
-				while (old_end != position) {
-					*--end = *--old_end;
-				}
-				while (n-- > 0) {
-					*position++ = val;
-				}
+                if ((this->_size + n) > this->_capacity)
+                {
+                    if (n > this->_size)
+                        reserve(this->_size + n);
+                    else
+                        reserve(this->_capacity * 2);
+                }
+                else if (this->_size == 0)
+                    reserve(n);
+                for (long long i = this->_size - 1; i >= j; i--)
+                    this->_alloc.construct(&this->_data[i + n], this->_data[i]);
+                for (size_type i = 0; i < n; i++)
+                    this->_alloc.construct(&this->_data[j++], val);
+                this->_size += n;
 			};
 			
 			template <class Ite>
 			void	insert(iterator position, Ite first, Ite last, typename enable_if<!is_integral<Ite>::value,Ite >::type = Ite()) {
-				difference_type const	i = position - this->begin();
-				difference_type const	old_end_i = this->end() - this->begin();
-				iterator				old_end;
-				iterator				end;
-
-				this->resize(this->_size + (this->_getItLen(first, last)));
-				end = this->end();
-				position = this->begin() + i;
-				old_end = this->begin() + old_end_i;
-				while (old_end != position) {
-					*--end = *--old_end;
-				}
-				while (first != last) {
-					*position++ = *first++;
-				}
+				difference_type	d = position - this->begin();
+                size_type range = this->_getItLen(first, last);
+                long long j = d;
+                size_t n = range;
+                if ((this->_size + n) > this->_capacity)
+                {
+                    if (n > this->_size)
+                        reserve(this->_size + n);
+                    else
+                        reserve(this->_capacity * 2);
+                }
+                else if (this->_size == 0)
+                    reserve(n);
+                for (long long i = this->_size - 1; i >= j; i--)
+                    this->_alloc.construct(&this->_data[i + n], this->_data[i]);
+                for (size_type i = 0; i < n; i++)
+                {
+                    this->_alloc.construct(&this->_data[j++], *first);
+                    first++;
+                }
+                this->_size += n;
 			};
 			
 			// erase
@@ -486,13 +478,12 @@ namespace ft {
 
 				while (last != end) {
 					*first = *last;
-					++first;
-					++last;
+					first++;
+					last++;
 				}
 				while (deleted > 0) {
-					this->_alloc.destroy(&this->_data[this->_size]);
+					this->_alloc.destroy(&this->_data[--this->_size]);
 					deleted--;
-					--this->_size;
 				}
 				return tmp;
 			};
@@ -508,10 +499,8 @@ namespace ft {
 
 			// clear
 			void	clear() {
-				while (this->_size > 0) {
-					this->_alloc.destroy(&this->_data[this->_size]);
-					--this->_size;
-				}
+				while (this->_size > 0)
+					this->_alloc.destroy(&this->_data[--this->_size]);
 			};
 
 			allocator_type	get_allocator() const {
@@ -525,8 +514,8 @@ namespace ft {
 			size_type	_getItLen(Ite first, Ite last) {
 				size_type	i = 0;
 				while (first != last){
-					++first;
-					++i;
+					first++;
+					i++;
 				}
 				return (i);
 			};
