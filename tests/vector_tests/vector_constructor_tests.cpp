@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 10:56:15 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/21 10:58:25 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/24 18:40:22 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ void	vector_constructor_tests() {
             time_t start, end, diff;
 
             start = get_time();
-            std::vector<std::string>    v(1e5, "fill constructor test");
+            std::vector<std::string>    v(10000, "fill constructor test");
             end = get_time();
             diff = end - start;
             diff  =  (diff)  ? (diff  *  TIME_FAC)  :  TIME_FAC;
 
             ualarm(diff * 1e3, 0);
-            ft::vector<std::string>    my_v(1e5, "fill constructor test");
+            ft::vector<std::string>    my_v(10000, "fill constructor test");
             ualarm(0, 0);
         }
         /*----------------------------------------------------------------------------------------------*/
@@ -49,7 +49,7 @@ void	vector_constructor_tests() {
         /*---------------------------------- time limit test --------------------------------------------*/
         {
             time_t start, end, diff;
-            std::vector<std::string>    v(1e5, "range constructor test");
+            std::vector<std::string>    v(10000, "range constructor test");
             start = get_time();
             std::vector<std::string>	v1(v.begin(), v.end());
             end = get_time();
@@ -84,14 +84,14 @@ void	vector_constructor_tests() {
         /*---------------------------------- time limit test --------------------------------------------*/
         {
             time_t start, end, diff;
-            std::vector<char>    v(1e7, 'a');
+            std::vector<char>    v(10000, 'a');
             start = get_time();
             std::vector<char>	copy_v(v);
             end = get_time();
             diff = end - start;
             diff  =  (diff)  ? (diff  *  20)  :  20;
 
-            ft::vector<char>    my_v(1e7, 'a');
+            ft::vector<char>    my_v(10000, 'a');
             alarm(diff);
             ft::vector<char>	my_copy_v(my_v);
             alarm(0);
