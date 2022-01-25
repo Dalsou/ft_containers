@@ -1,4 +1,4 @@
-#include "../stack/stack.hpp"
+#include "../../stack/stack.hpp"
 
 #include <vector>
 #include <stack>

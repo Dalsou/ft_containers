@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 16:15:37 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/25 12:12:14 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 12:49:27 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void testAllocatorMethodes()
         ft::map<char, int> mymap;
         ft::pair<const char, int> *p;
 
-        // allocate an array of 5 elements using mymap's allocator:
         p = mymap.get_allocator().allocate(5);
 
         psize = sizeof(std::map<char, int>::value_type) * 5;
