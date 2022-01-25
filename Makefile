@@ -6,7 +6,7 @@
 #    By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/05 10:24:52 by afoulqui          #+#    #+#              #
-#    Updated: 2022/01/25 10:07:37 by afoulqui         ###   ########.fr        #
+#    Updated: 2022/01/25 12:12:59 by afoulqui         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,27 +16,26 @@
 
 NAME		=	vector.out
 
- SRC_LST		=	vector_tests.cpp \
-				capacity_functions_tests.cpp \
-				element_functions_tests.cpp \
-				iterator_functions_tests.cpp \
-				iterator_test.cpp \
-				modifier_functions_tests.cpp \
-				non_member_functions_tests.cpp \
-				vector_constructor_tests.cpp \
-				vector_operator_tests.cpp
-#				map_tests.cpp \
-# 				map_iterator_tests.cpp \
-# 				map_constructor_tests.cpp \
-# 				map_iterator_functions_tests.cpp \
-# 				map_capacity_tests.cpp \
-# 				map_element_tests.cpp \
-# 				map_modifier_tests.cpp \
-# 				map_observer_tests.cpp \
-# 				map_operation_tests.cpp \
-# 				map_non_member_tests.cpp
-				# stack_tests.cpp
-
+ SRC_LST		=	map_tests.cpp \
+				map_iterator_tests.cpp \
+				map_constructor_tests.cpp \
+				map_iterator_functions_tests.cpp \
+				map_capacity_tests.cpp \
+				map_element_tests.cpp \
+				map_modifier_tests.cpp \
+				map_observer_tests.cpp \
+				map_operation_tests.cpp \
+				map_non_member_tests.cpp 
+ 				# stack_tests.cpp
+ 				# vector_tests.cpp \
+				# capacity_functions_tests.cpp \
+				# element_functions_tests.cpp \
+				# iterator_functions_tests.cpp \
+				# iterator_test.cpp \
+				# modifier_functions_tests.cpp \
+				# non_member_functions_tests.cpp \
+				# vector_constructor_tests.cpp \
+				# vector_operator_tests.cpp \
 				
 SRC_DIR		=	$(shell find tests -type d)
 SRCS		=	$(foreach dir, $(SRC_DIR), $(SRC_LST))

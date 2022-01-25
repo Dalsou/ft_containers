@@ -6,14 +6,14 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 11:19:18 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/21 11:20:39 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 11:22:13 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector_tests.hpp"
 
 void	non_member_functions_tests() {
-	std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator== " << "] --------------------]\t\t\033[0m";
+	TITLE("operator==");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -105,7 +105,7 @@ void	non_member_functions_tests() {
         }
         EQUAL(cond);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator!= " << "] --------------------]\t\t\033[0m";
+    TITLE("operator!=");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -197,7 +197,7 @@ void	non_member_functions_tests() {
         }
         EQUAL(cond);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator< " << "] --------------------]\t\t\033[0m";
+    TITLE("operator<");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -289,7 +289,7 @@ void	non_member_functions_tests() {
         }
         EQUAL(cond);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator<= " << "] --------------------]\t\t\033[0m";
+    TITLE("operator<=");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -381,7 +381,7 @@ void	non_member_functions_tests() {
         }
         EQUAL(cond);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator> " << "] --------------------]\t\t\033[0m";
+    TITLE("operator>");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -473,7 +473,7 @@ void	non_member_functions_tests() {
         }
         EQUAL(cond);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator>= " << "] --------------------]\t\t\033[0m";
+    TITLE("operator>=");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -565,7 +565,7 @@ void	non_member_functions_tests() {
         }
         EQUAL(cond);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " swap " << "] --------------------]\t\t\033[0m";
+    TITLE("swap");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {

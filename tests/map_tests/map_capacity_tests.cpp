@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:09:42 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/24 12:06:34 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 12:05:55 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void testCapacityMethods()
 {
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " size method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("size method");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -65,8 +64,7 @@ void testCapacityMethods()
         EQUAL(m1.size() == ft_m1.size() && m2.size() == ft_m2.size() && m3.size() == ft_m3.size() && m5.size() == ft_m5.size() && m4.size() == ft_m4.size());
     }
 
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " empty method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("empty method");
     {
         std::map<int, std::string> m1;
         std::map<int, std::string> m2;

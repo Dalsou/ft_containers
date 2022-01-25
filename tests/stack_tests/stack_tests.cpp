@@ -9,23 +9,23 @@
 #include <signal.h>
 #include <sys/time.h>
 
-#define BLUE "\e[0;34m"
-#define RED "\e[0;31m"
-#define GREEN "\e[0;32m"
-#define YELLOW "\e[1;33m"
 #define RESET "\e[0m"
+#define MAGENTA "\e[1;95m"
+#define CYAN "\e[1;96m"
 
 #define EQUAL(x) ((x) ? (std::cout << "\033[1;32mOK\033[0m\n") : (std::cout << "\033[1;31mKO\033[0m\n"))
-#define TIME_FAC 3 // the ft::Map methods can be slower up to std::map methods * TIME_FAC (MAX 20)
+#define TIME_FAC 20
 
+#define TITLE(str) \
+	std::cout << "\t\t\033[1;37m" << std::setw(30) << std::left << str << "   ===== >\t\t\033[0m";
+using namespace std;
 
-#define TEST_CASE(fn)                                                                                                             \
-    cout << GREEN << "\t======================================================================================" << RESET << endl; \
-    cout << endl;                                                                                                                 \
-    cout << BLUE << "\t   Running " << #fn << " ... \t\t\t\t\t\t" << RESET << std::endl;                                          \
-    fn();                                                                                                                         \
-    cout << endl;                                                                                                                 \
-    cout << GREEN << "\t======================================================================================" << RESET << endl;
+#define TEST_CASE(fn)                                                                                        \
+    cout << MAGENTA << "\t==========================================================================" << RESET << endl;			 \
+    cout << endl;                                                                                            \
+    fn();                                                                                                    \
+    cout << endl;                                                                                            \
+    cout << MAGENTA << "\t==========================================================================\n" << RESET << endl;
 using namespace std;
 
 time_t get_time(void)
@@ -39,8 +39,7 @@ time_t get_time(void)
 
 void	testConstructors(void)
 {
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " default constructor "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("default constructor");
 	{
 		std::vector<int> myvector (2,200);
 		ft::stack<int,std::vector<int> > s(myvector);
@@ -50,8 +49,7 @@ void	testConstructors(void)
 
 void	testMemberMethods(void)
 {
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " empty method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("empty method");
 	{
 		ft::stack<int> mystack;
 		int sum (0);
@@ -65,8 +63,7 @@ void	testMemberMethods(void)
 		}
 		EQUAL(sum == 55);
 	}
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " size method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("size method");
 	{
 		bool cond(false);
 		ft::stack<int> myints;
@@ -79,8 +76,7 @@ void	testMemberMethods(void)
 		cond = cond && (myints.size() == 4);
 		EQUAL(cond);
 	}
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " top method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("top method");
 	{
 		ft::stack<int> mystack;
 
@@ -94,8 +90,7 @@ void	testMemberMethods(void)
 
 		EQUAL(mystack.top() == 15 && c_mystack.top() == 300);
 	}
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " push & pop methods "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("push & pop methods");
 	{
 		int sum(0);
 		ft::stack<int> mystack;
@@ -113,8 +108,7 @@ void	testMemberMethods(void)
 
 void	testRelationalOperators(void)
 {
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator== "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("operator==");
 	{
 		bool cond(false);
 		std::vector<int>	vec(100, 2);
@@ -145,8 +139,7 @@ void	testRelationalOperators(void)
 		}
 		EQUAL(cond);
 	}
-	std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator!= "
-              << "] --------------------]\t\t\033[0m";
+	TITLE("operator!=");
 	{
 		bool cond(false);
 		std::vector<int>	vec(100, 2);
@@ -177,8 +170,7 @@ void	testRelationalOperators(void)
 		}
 		EQUAL(cond);
 	}
-	std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator< "
-              << "] --------------------]\t\t\033[0m";
+	TITLE("operator<");
 	{
 		bool cond(false);
 		std::vector<int>	vec(100, 2);
@@ -209,8 +201,7 @@ void	testRelationalOperators(void)
 		}
 		EQUAL(cond);
 	}
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator<= "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("operator<=");
 	{
 		bool cond(false);
 		std::vector<int>	vec(100, 2);
@@ -241,8 +232,7 @@ void	testRelationalOperators(void)
 		}
 		EQUAL(cond);
 	}
-	std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator> "
-              << "] --------------------]\t\t\033[0m";
+	TITLE("operator>");
 	{
 		bool cond(false);
 		std::vector<int>	vec(100, 2);
@@ -273,8 +263,7 @@ void	testRelationalOperators(void)
 		}
 		EQUAL(cond);
 	}
-	std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator>= "
-              << "] --------------------]\t\t\033[0m";
+	TITLE("operator>=");
 	{
 		bool cond(false);
 		std::vector<int>	vec(100, 2);
@@ -319,13 +308,19 @@ int main()
 {
     signal(SIGALRM, alarm_handler);
 
-    std::cout << YELLOW << "Testing Constructors;" << RESET << std::endl;
+	std::cout << "\n\t\t\t\033[093;1m*.................................*";
+	std::cout << "\n\t\t\t*                                 *";
+	std::cout << "\n\t\t\t*\t    STACK  TEST           *";
+	std::cout << "\n\t\t\t*                                 *";
+	std::cout << "\n\t\t\t\033[093;1m*.................................*\033[0m\n\n";
+
+    std::cout << CYAN << "\tTesting Constructors" << RESET << std::endl;
     TEST_CASE(testConstructors);
 
-    std::cout << YELLOW << "Testing member methods;" << RESET << std::endl;
+    std::cout << CYAN << "\tTesting Member Methods" << RESET << std::endl;
     TEST_CASE(testMemberMethods);
 
-    std::cout << YELLOW << "Testing relational operators;" << RESET << std::endl;
+    std::cout << CYAN << "\tTesting Relational Operators" << RESET << std::endl;
     TEST_CASE(testRelationalOperators);
 
 	return 0;

@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 11:22:33 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/24 11:24:51 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 12:00:02 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void testObservers()
 {
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " key_comp method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("key_comp method");
     {
         bool cond(true);
         std::map<int, int> m;
@@ -46,8 +45,7 @@ void testObservers()
         EQUAL(cond);
     }
 
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " value_comp method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("value_comp method");
     {
         int sum(0);
         int s_key(0);

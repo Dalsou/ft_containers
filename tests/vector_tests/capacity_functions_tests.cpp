@@ -6,14 +6,14 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 11:05:19 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/21 13:43:58 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 11:18:52 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector_tests.hpp"
 
 void	capacity_functions_tests() {
-	std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " size method " << "] --------------------]\t\t\033[0m";
+	TITLE("size method");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -51,7 +51,7 @@ void	capacity_functions_tests() {
         EQUAL(v1.size() == ft_v1.size() && v2.size() == ft_v2.size() 
         && v3.size() == ft_v3.size() && v4.size() == ft_v4.size() && v5.size() == ft_v5.size());
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " capacity method " << "] --------------------]\t\t\033[0m";
+    TITLE("capacity method");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -89,7 +89,7 @@ void	capacity_functions_tests() {
         EQUAL(v1.capacity() == ft_v1.capacity() && v2.capacity() == ft_v2.capacity() 
         && v3.capacity() == ft_v3.capacity() && v4.capacity() == ft_v4.capacity() && v5.capacity() == ft_v5.capacity());
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " max_size method " << "] --------------------]\t\t\033[0m";
+    TITLE("max_size method");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -124,7 +124,7 @@ void	capacity_functions_tests() {
         EQUAL(v1.max_size() == ft_v1.max_size() && v2.max_size() == ft_v2.max_size() 
         && v4.max_size() == ft_v4.max_size());
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " resize method " << "] --------------------]\t\t\033[0m";
+    TITLE("resize method");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -299,7 +299,7 @@ void	capacity_functions_tests() {
 		EQUAL((s1 == ft_s1 && z1 == ft_z1 && c1 == ft_c1 && sit1 == ft_sit1) && (s2 == ft_s2 &&  z2 == ft_z2 && c2 == ft_c2)
         && (s3 == ft_s3 && z3 == ft_z3 && c3 == ft_c3 && sit2 == ft_sit2) && (s4 == ft_s4 && z4 == ft_z4 && c4 == ft_c4 && sit3 == ft_sit3));
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " empty method " << "] --------------------]\t\t\033[0m";
+    TITLE("empty method");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -327,7 +327,7 @@ void	capacity_functions_tests() {
         EQUAL(v1.empty() == ft_v1.empty() && v2.empty() == ft_v2.empty());
 
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " reserve method " << "] --------------------]\t\t\033[0m";
+    TITLE("reserve method");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {

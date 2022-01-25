@@ -79,8 +79,7 @@ bool testmapConstructors()
 
 void testConstructors()
 {
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " empty constructor "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("empty constructor");
     {
         /*---------------------------------- time limit test --------------------------------------------*/
         // {
@@ -88,7 +87,7 @@ void testConstructors()
 
         //     start = get_time();
         //     std::map<int, std::string> m;
-        //     for (int i = 0; i < 10000; ++i)
+        //     for (int i = 0; i < 1000; ++i)
         //         m.insert(std::make_pair(i, "fill constructor test"));
         //     end = get_time();
         //     diff = end - start;
@@ -120,8 +119,7 @@ void testConstructors()
             my_res += it->second;
         EQUAL(res == my_res);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " range constructor "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("range constructor");
     {
         /*---------------------------------- time limit test --------------------------------------------*/
         // {
@@ -129,7 +127,7 @@ void testConstructors()
         //     std::map<int, std::string> m;
         //     ft::map<int, std::string> my_m;
 
-        //     for (size_t i = 0; i < 10000; i++)
+        //     for (size_t i = 0; i < 1000; i++)
         //     {
         //         m.insert(std::make_pair(i, "range constructor test"));
         //         my_m.insert(ft::make_pair(i, "range constructor test"));
@@ -180,8 +178,7 @@ void testConstructors()
         }
         EQUAL(res == my_res && my_res == my_res1);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("copy constructor");
     {
         /*---------------------------------- time limit test --------------------------------------------*/
         {
@@ -222,11 +219,9 @@ void testConstructors()
             res1 += it->second;
         EQUAL(res == res1);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " Constructors with costum compare "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("constructors with costum comp");
     EQUAL(testmapConstructors());
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator= (lhs.size = rhs.size) "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("operator= (lhs.s = rhs.s)");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         // {
@@ -284,8 +279,7 @@ void testConstructors()
         EQUAL(res == ft_res);
     }
 
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator= deep copy "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("operator= deep copy");
     {
         std::map<int, std::string> m1;
         std::map<int, std::string> m2;
@@ -307,8 +301,7 @@ void testConstructors()
 
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------*/
     /*------------------------------------------ test 2 : test with diff size vecotrs ----------------------------------------------------------------------*/
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " = operator (lhs.size < rhs.size) "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("= operator (lhs.s < rhs.s)");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         // {
@@ -372,8 +365,7 @@ void testConstructors()
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------*/
     /*------------------------------------------ test 3 : test with diff size vecotrs ----------------------------------------------------------------------*/
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " = operator (lhs.size > rhs.size) "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("= operator (lhs.s > rhs.s)");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         // {
@@ -443,8 +435,7 @@ void testConstructors()
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------*/
     /*------------------------------------------ test 4 : test with one empty vector ----------------------------------------------------------------------*/
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " = operator (lhs.size = 0) "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("= operator (lhs.size = 0)");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         // {
@@ -503,8 +494,7 @@ void testConstructors()
     }
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------*/
     /*------------------------------------------ test 5 : test with one empty vector ----------------------------------------------------------------------*/
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " = operator (rhs.size = 0) "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("= operator (rhs.size = 0)");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         // {

@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:35:34 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/24 18:38:07 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 12:01:25 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ bool comparemaps(Iter1 first1, Iter1 last1, Iter2 first2, Iter2 last2)
 
 void testModifiers()
 {
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " insert method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("insert method");
     {
         bool cond(false);
         {
@@ -90,8 +89,7 @@ void testModifiers()
         EQUAL(cond);
     }
 
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " erase method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("erase method");
 
     {
         bool cond(false);
@@ -204,9 +202,7 @@ void testModifiers()
         EQUAL(cond);
     }
 
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " swap method "
-              << "] --------------------]\t\t\033[0m";
-
+    TITLE("swap method");
     {
         {
             time_t start, end, diff;
@@ -326,9 +322,7 @@ void testModifiers()
 
         EQUAL(cond);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " clear method "
-              << "] --------------------]\t\t\033[0m";
-
+    TITLE("clear method");
     {
         {
             time_t start, end, diff;

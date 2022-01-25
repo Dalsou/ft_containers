@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 10:48:38 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/21 11:20:35 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 11:32:34 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,24 @@
 #include "../../map/map.hpp"  // path to ft::pair.
 
 
-# define BLUE "\e[0;34m"
-# define RED "\e[0;31m"
-# define GREEN "\e[0;32m"
-# define YELLOW "\e[1;33m"
-# define RESET "\e[0m"
+#define RESET "\e[0m"
+#define MAGENTA "\e[1;95m"
+#define CYAN "\e[1;96m"
 
 # define EQUAL(x) ((x) ? (std::cout << "\033[1;32mOK\033[0m\n") : (std::cout << "\033[1;31mKO\033[0m\n"))
-# define TIME_FAC 20 // the ft::vector methods can be slower up to std::vector methods * TIME_FAC (MAX 20)
+# define TIME_FAC 20
+
+#define TITLE(str) \
+	std::cout << "\t\t\033[1;37m" << std::setw(30) << std::left << str << "   ===== >\t\t\033[0m";
+using namespace std;
+
+#define TEST_CASE(fn)                                                                                        \
+    cout << MAGENTA << "\t==========================================================================" << RESET << endl;			 \
+    cout << endl;                                                                                            \
+    fn();                                                                                                    \
+    cout << endl;                                                                                            \
+    cout << MAGENTA << "\t==========================================================================\n" << RESET << endl;
+using namespace std;
 
 time_t 	get_time(void);
 

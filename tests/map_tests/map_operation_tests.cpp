@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 11:53:46 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/24 11:58:16 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 11:59:27 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ bool comparemaps(Iter1 first1, Iter1 last1, Iter2 first2, Iter2 last2)
 
 void testOperations()
 {
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " find method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("find method");
     {
         bool cond(true);
         {
@@ -119,8 +118,7 @@ void testOperations()
 
         EQUAL(cond && vec == ft_vec);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " count method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("count method");
     {
         bool cond = false;
         /*---------------------------------- time limit test --------------------------------------------*/
@@ -157,8 +155,7 @@ void testOperations()
         cond = (cond && (m.count(65) == ft_m.count(65) && m.count(300) == ft_m.count(300)));
         EQUAL(cond);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " lower_bound method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("lower_bound method");
     {
         bool cond;
         /*---------------------------------- time limit test --------------------------------------------*/
@@ -207,8 +204,7 @@ void testOperations()
         cond = (cond && (c_m.lower_bound(70)->first == c_ft_m.lower_bound(70)->first));
         EQUAL(cond);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " upper_bound method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("upper_bound method");
     {
         bool cond;
         /*---------------------------------- time limit test --------------------------------------------*/
@@ -259,8 +255,7 @@ void testOperations()
         cond = (cond && (c_m.upper_bound(150)->first == c_ft_m.upper_bound(150)->first));
         EQUAL(cond);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " equal_range method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("equal_range method");
     {
         bool cond;
         /*---------------------------------- time limit test --------------------------------------------*/

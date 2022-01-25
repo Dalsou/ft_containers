@@ -6,14 +6,14 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 11:09:42 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/21 11:14:10 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 11:20:30 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector_tests.hpp"
 
 void	element_functions_tests() {
-	std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator[] method " << "] --------------------]\t\t\033[0m";
+	TITLE("operator[] method");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -64,7 +64,7 @@ void	element_functions_tests() {
         
         EQUAL(s1 == ft_s1 && s2 == ft_s2);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " at method " << "] --------------------]\t\t\033[0m";
+    TITLE("at method");
    	{
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -124,7 +124,7 @@ void	element_functions_tests() {
 
         EQUAL(s1 == ft_s1 && s2 == ft_s2 && exce_throwed);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " front method " << "] --------------------]\t\t\033[0m";
+    TITLE("front method");
     {
         /*------------------ std::vectors ---------------------*/
         std::vector<std::string>    v1(10, "string2");
@@ -137,7 +137,7 @@ void	element_functions_tests() {
         ft_v1.front() = "LEET";
         EQUAL(v1.front() == ft_v1.front() && v2.front() == ft_v2.front());
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " back method " << "] --------------------]\t\t\033[0m";
+    TITLE("back method");
     {
         /*------------------ std::vectors ---------------------*/
         std::vector<std::string>    v1(10, "string2");

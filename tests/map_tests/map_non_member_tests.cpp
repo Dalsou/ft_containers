@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 12:01:46 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/24 12:02:50 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 12:00:30 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void testNonMemberSwap()
 {
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " non-member swap method "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("non-member swap method");
     {
         int res(0), ft_res(0), key_res(0), ft_key_res(0);
         ft::map<char, int> foo, bar;
@@ -75,8 +74,7 @@ void testRetionalOperators()
         ft_m1.insert(ft::make_pair(i + 1, "value1"));
     }
 
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator == "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("operator ==");
     /*---------------------------------- time limit test --------------------------------------------*/
     {
         time_t start, end, diff;
@@ -93,8 +91,7 @@ void testRetionalOperators()
 
     EQUAL(((foo == bar) == (ft_foo == ft_bar)) && res == ft_res);
 
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator != "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("operator !=");
     /*---------------------------------- time limit test --------------------------------------------*/
     {
         time_t start, end, diff;
@@ -111,8 +108,7 @@ void testRetionalOperators()
     }
     EQUAL((foo != bar) == (ft_foo != ft_bar) && res == ft_res);
 
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator > "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("operator >");
     /*---------------------------------- time limit test --------------------------------------------*/
     {
         time_t start, end, diff;
@@ -128,8 +124,7 @@ void testRetionalOperators()
     }
     EQUAL(((foo > bar) == (ft_foo > ft_bar)) && (res == ft_res));
 
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator >= "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("operator >=");
     /*---------------------------------- time limit test --------------------------------------------*/
     {
         time_t start, end, diff;
@@ -146,8 +141,7 @@ void testRetionalOperators()
     }
     EQUAL(((foo >= bar) == (ft_foo >= ft_bar)) && (res == ft_res));
 
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator < "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("operator <");
     /*---------------------------------- time limit test --------------------------------------------*/
     {
         time_t start, end, diff;
@@ -164,8 +158,7 @@ void testRetionalOperators()
     }
     EQUAL(((foo < bar) == (ft_foo < ft_bar)) && (res == ft_res));
 
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator <= "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("operator <=");
     /*---------------------------------- time limit test --------------------------------------------*/
     {
         time_t start, end, diff;

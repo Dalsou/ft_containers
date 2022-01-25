@@ -6,14 +6,14 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 11:02:46 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/21 11:03:40 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 11:21:01 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector_tests.hpp"
 
 void	iterator_functions_tests() {
-	std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " begin and end methods " << "] --------------------]\t\t\033[0m";
+	TITLE("begin and end methods");
 	{
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -60,7 +60,7 @@ void	iterator_functions_tests() {
         EQUAL(res == ft_res && c_res == c_ft_res);
 	}
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------*/
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " rbegin and rend methods " << "] --------------------]\t\t\033[0m";
+    TITLE("rbegin and rend methods");
 	{
         /*-------------------------------------- time limit test -----------------------------------*/
         {

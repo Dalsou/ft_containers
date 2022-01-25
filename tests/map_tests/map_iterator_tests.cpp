@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 16:20:23 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/24 12:17:23 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 12:03:23 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,24 @@ void iterator_tests(void)
     my_it = my_m.begin();
     my_it1 = ++(my_m.begin());
     /*----------------------------------*/
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("copy constructor");
     {
         ft::map<int, char>::iterator ob(my_it);
         EQUAL(&(*my_it) == &(*ob));
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " iterator to const_iterator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("iterator to const_iterator");
     {
         ft::map<int, char>::const_iterator c_it, c_ob(my_it);
         c_it = my_it;
         EQUAL(&(*my_it) == &(*c_it) && (&(*my_it) == &(*c_ob)));
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " == operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("== operator");
     EQUAL((it == it1) == (my_it == my_it1));
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " != operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("!= operator");
     EQUAL((it != it1) == (my_it != my_it1));
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " * operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("* operator");
     EQUAL((((*my_it).second = '6') == '6') && ((*my_it).first == ((*my_m.begin()).first)));
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " -> operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("-> operator");
     {
         /*--------------- std::map-------------------- */
         std::map<int, std::string> m;
@@ -72,32 +66,31 @@ void iterator_tests(void)
         /*---------------------------------------------- */
         EQUAL(it->second.length() == my_it->second.length());
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " ++it operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("++it operator");
     {
         /*---------------------------------- time limit test --------------------------------------------*/
-        // {
-        //     time_t start, end, diff;
+        {
+            time_t start, end, diff;
 
-        //     std::map<int, std::string> m;
-        //     ft::map<int, std::string> ft_m;
-        //     for (size_t i = 0; i < 10000; ++i)
-        //     {
-        //         m.insert(std::make_pair(i, "value"));
-        //         ft_m.insert(ft::make_pair(i, "value"));
-        //     }
-        //     start = get_time();
-        //     for (std::map<int, std::string>::iterator it = m.begin(); it != m.end(); ++it)
-        //         ;
-        //     end = get_time();
-        //     diff = end - start;
-        //     diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
+            std::map<int, std::string> m;
+            ft::map<int, std::string> ft_m;
+            for (size_t i = 0; i < 1000; ++i)
+            {
+                m.insert(std::make_pair(i, "value"));
+                ft_m.insert(ft::make_pair(i, "value"));
+            }
+            start = get_time();
+            for (std::map<int, std::string>::iterator it = m.begin(); it != m.end(); ++it)
+                ;
+            end = get_time();
+            diff = end - start;
+            diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
 
-        //     ualarm(diff * 1e3, 0);
-        //     for (ft::map<int, std::string>::iterator it = ft_m.begin(); it != ft_m.end(); ++it)
-        //         ;
-        //     ualarm(0, 0);
-        // }
+            ualarm(diff * 1e3, 0);
+            for (ft::map<int, std::string>::iterator it = ft_m.begin(); it != ft_m.end(); ++it)
+                ;
+            ualarm(0, 0);
+        }
         bool cond(false);
         {
             int res(0);
@@ -122,11 +115,10 @@ void iterator_tests(void)
                 res += it->first;
             cond = cond && (res == (210 - tmp));
         }
-        ++my_it; // I incremented here to make sure that the object changes
+        ++my_it; 
         EQUAL(*my_it == *my_it1);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " --it operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("--it operator");
     {
         /*---------------------------------- time limit test --------------------------------------------*/
         {
@@ -170,15 +162,13 @@ void iterator_tests(void)
                 res += it->first;
             }
         }
-        --my_it; // I decremented here to make sure that the object changes
+        --my_it;
         EQUAL(*my_it != *my_it1);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " it++ operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("it++ operator");
     tmp = my_it++;
     EQUAL(*my_it != *tmp && *my_it == *my_it1);
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " it-- operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("it-- operator");
     tmp = my_it--;
     EQUAL(*my_it != *tmp && *my_it == *(my_m.begin()));
 }
@@ -204,20 +194,16 @@ void const_iterator_tests(void)
     my_it1 = ++(my_m.begin());
     /*----------------------------------*/
 
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("copy constructor");
     {
         ft::map<int, char>::const_iterator ob(my_it);
         EQUAL(*my_it == *ob);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " == operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("== operator");
     EQUAL((it == it1) == (my_it == my_it1));
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " != operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("!= operator");
     EQUAL((it != it1) == (my_it != my_it1));
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " -> operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("-> operator");
     {
         /*--------------- std::map-------------------- */
         std::map<int, std::string> m;
@@ -234,20 +220,16 @@ void const_iterator_tests(void)
         /*---------------------------------------------- */
         EQUAL(it->second.length() == my_it->second.length());
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " ++it operator "
-              << "] --------------------]\t\t\033[0m";
-    ++my_it; // I incremented here to make sure that the object changes
+    TITLE("++it operator");
+    ++my_it; 
     EQUAL(*my_it == *my_it1);
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " --it operator "
-              << "] --------------------]\t\t\033[0m";
-    --my_it; // I decremented here to make sure that the object changes
+    TITLE("--it operator");
+    --my_it; 
     EQUAL(*my_it != *my_it1);
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " it++ operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("it++ operator");
     tmp = my_it++;
     EQUAL(*my_it != *tmp && *my_it == *my_it1);
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " it-- operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("it-- operator");
     tmp = my_it--;
     EQUAL(*my_it != *tmp && *my_it == *(my_m.begin()));
 }
@@ -263,14 +245,12 @@ void reverse_iterator_tests(void)
 
     ft::reverse_iterator<std::map<int, char>::iterator> my_rit(m.end()), my_rit1(--m.end());
     /*----------------------------------*/
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("copy constructor");
     {
         ft::reverse_iterator<std::map<int, char>::iterator> ob(my_rit);
         EQUAL(*my_rit == *ob);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " riterator to const_riterator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("riterator to const_riterator");
     {
         ft::map<int, char> my_m;
         for (int i = 0; i < 1e2; i++)
@@ -281,42 +261,30 @@ void reverse_iterator_tests(void)
         c_it = my_rit2;
         EQUAL(my_rit2->first == c_it->first && my_rit2->first == c_ob->first);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " base function "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("base function");
     EQUAL((rit->first == (rit_1.base()->first)) && (my_rit->first == my_rit1.base()->first));
-    // std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " == operator "
-    //           << "] --------------------]\t\t\033[0m";
-    // EQUAL((rit == rit_1) == (my_rit == my_rit1));
-    // std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " != operator "
-    //           << "] --------------------]\t\t\033[0m";
-    // EQUAL((rit != rit_1) == (my_rit != my_rit1));
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " -> operator "
-              << "] --------------------]\t\t\033[0m";
+
+    TITLE("-> operator");
     EQUAL(((my_rit->first == (--m.end())->first) && ((my_rit->first) == ((--m.end())->first))) && ((rit->first == (--m.end())->first) && ((rit->first) == ((--m.end())->first))));
 
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " * operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("* operator");
     EQUAL((((*my_rit).first == (*(--m.end())).first) && (((*my_rit).first) == ((*(--m.end())).first))) && (((*rit).first == (*(--m.end())).first) && ((*(rit)).first) == ((*(--m.end())).first)));
 
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " ++rit operator "
-              << "] --------------------]\t\t\033[0m";
-    ++my_rit; // I incremented here to make sure that the object changes
+    TITLE("++rit operator");
+    ++my_rit;
     ++rit;
     EQUAL(&(*my_rit) == &(*my_rit1)) && (&(*rit) == &(*rit_1));
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " --rit operator "
-              << "] --------------------]\t\t\033[0m";
-    --my_rit; // I incremented here to make sure that the object changes
+    TITLE("--rit operator");
+    --my_rit;
     --rit;
     EQUAL((my_rit->first == (--my_rit1)->first) && (rit->first == (--rit_1)->first));
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " rit++ operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("rit++ operator");
     {
         std::reverse_iterator<std::map<int, char>::iterator> tmp(rit++);
         ft::reverse_iterator<std::map<int, char>::iterator> my_tmp(my_rit++);
         EQUAL(tmp->first == (--rit)->first && my_tmp->first == (--my_rit)->first);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " rit-- operator "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("rit-- operator");
     {
         rit++;
         my_rit++;

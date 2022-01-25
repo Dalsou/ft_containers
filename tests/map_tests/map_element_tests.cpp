@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:31:04 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/24 12:11:08 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 12:04:30 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void testElementAccess()
 {
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " operator [] "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("operator []");
     {
         {
             time_t start, end, diff;

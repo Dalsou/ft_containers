@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 09:57:32 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/24 12:11:44 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 12:03:54 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void testIterators()
 {
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " begin and end methods "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("begin and end methods");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -81,8 +80,7 @@ void testIterators()
         eit--;
         EQUAL(res == ft_res && c_res == c_ft_res && eit->first == 82);
     }
-    std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " rbegin and rend methods "
-              << "] --------------------]\t\t\033[0m";
+    TITLE("rbegin and rend methods");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {

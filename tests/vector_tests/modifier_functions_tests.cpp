@@ -6,14 +6,14 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 11:13:38 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/21 13:59:29 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 11:21:32 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector_tests.hpp"
 
 void	modifier_functions_tests() {
-	std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " assign(fill) method " << "] --------------------]\t\t\033[0m";
+	TITLE("assign(fill) method");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -88,7 +88,7 @@ void	modifier_functions_tests() {
         EQUAL((s1 == ft_s1 && z1 == ft_z1 && c1 == ft_c1) && (s2 == ft_s2 && z2 == ft_z2 && c2 == ft_c2)
         && (s3 == ft_s3 && z3 == ft_z3 && c3 == ft_c3));
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " assign(range) method " << "] --------------------]\t\t\033[0m";
+    TITLE("assign(range) method");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -168,7 +168,7 @@ void	modifier_functions_tests() {
         EQUAL((s1 == ft_s1 && z1 == ft_z1 && c1 == ft_c1) && (s2 == ft_s2 && z2 == ft_z2 && c2 == ft_c2)
         && (s3 == ft_s3 && z3 == ft_z3 && c3 == ft_c3));
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " push_back method " << "] --------------------]\t\t\033[0m";
+    TITLE("push_back method");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -275,7 +275,7 @@ void	modifier_functions_tests() {
         EQUAL((s1 == ft_s1 && z1 == ft_z1 && c1 == ft_c1) && (s2 == ft_s2 && z2 == ft_z2 && c2 == ft_c2)
         && (s3 == ft_s3 && z3 == ft_z3 && c3 == ft_c3));
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " pop_back method " << "] --------------------]\t\t\033[0m";
+    TITLE("pop_back method");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -318,7 +318,7 @@ void	modifier_functions_tests() {
             ft_s1 += ft_v[i];
         EQUAL(z1 == ft_z1 && c1 == ft_c1 && s1 == ft_s1);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " insert method (single element) " << "] --------------------]\t\t\033[0m";
+    TITLE("insert method (single element)");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -466,7 +466,7 @@ void	modifier_functions_tests() {
         /*---------------------------------------------------------------------------------------------------*/
         EQUAL(cond);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " insert method (fill) " << "] --------------------]\t\t\033[0m";
+    TITLE("insert method (fill)");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -631,7 +631,7 @@ void	modifier_functions_tests() {
         // /*---------------------------------------------------------------------------------------------------*/
         EQUAL(cond);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " insert method (range) " << "] --------------------]\t\t\033[0m";
+    TITLE("insert method (range)");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -805,7 +805,7 @@ void	modifier_functions_tests() {
         /*---------------------------------------------------------------------------------------------------*/
         EQUAL(cond);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " erase method (single element) " << "] --------------------]\t\t\033[0m";
+    TITLE("erase method (single element)");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -859,7 +859,7 @@ void	modifier_functions_tests() {
         //cond = (cond && (std::distance(v.begin(), it) == std::distance(ft_v.begin(), ft_it)));
         EQUAL(cond);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " erase method (range) " << "] --------------------]\t\t\033[0m";
+    TITLE("erase method (range)");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -982,7 +982,7 @@ void	modifier_functions_tests() {
         /*--------------------------------------------------------------------------*/
         EQUAL(cond);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " swap method " << "] --------------------]\t\t\033[0m";
+    TITLE("swap method");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {
@@ -1100,7 +1100,7 @@ void	modifier_functions_tests() {
         /*--------------------------------------------------------------------------------------------*/
         EQUAL(cond);
     }
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " clear method " << "] --------------------]\t\t\033[0m";
+    TITLE("clear method");
     {
         /*-------------------------------------- time limit test -----------------------------------*/
         {

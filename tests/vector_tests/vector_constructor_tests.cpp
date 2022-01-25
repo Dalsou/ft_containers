@@ -6,14 +6,14 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 10:56:15 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/24 18:40:22 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 11:22:44 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector_tests.hpp"
 
 void	vector_constructor_tests() {
-	std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " fill constructor " << "] --------------------]\t\t\033[0m";
+	TITLE("fill constructor");
 	{
         /*---------------------------------- time limit test --------------------------------------------*/
         {
@@ -44,7 +44,7 @@ void	vector_constructor_tests() {
             my_res += *it;
         EQUAL(res == my_res);
 	}
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " range constructor " << "] --------------------]\t\t\033[0m";
+    TITLE("range constructor");
 	{
         /*---------------------------------- time limit test --------------------------------------------*/
         {
@@ -79,7 +79,7 @@ void	vector_constructor_tests() {
             my_res1 += *it;
         EQUAL(res == my_res && my_res == my_res1);
 	}
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor " << "] --------------------]\t\t\033[0m";
+    TITLE("copy constructor");
     {
         /*---------------------------------- time limit test --------------------------------------------*/
         {

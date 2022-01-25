@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector.cpp                                         :+:      :+:    :+:   */
+/*   vector_tests.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 10:51:33 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/21 14:52:22 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/25 12:11:21 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ time_t get_time(void)
 }	
 
 void	get_allocator_test() {
-    std::cout << "\033[1;37m[-------------------- [" << std::setw(40) << std::left << " get_allocator method " << "] --------------------]\t\t\033[0m";
+    TITLE("get_allocator method");
     {
         std::vector<std::string> v(200, "hello");
         ft::vector<std::string> ft_v(200, "hello");
@@ -33,26 +33,29 @@ void	get_allocator_test() {
 
 void vector_tests(void)
 {
-    std::cout << "\033[1;36m<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< VECTOR TESTS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
-   
-   	std::cout << "\033[1;36m<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Constructor tests >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
-	vector_constructor_tests();
-   	std::cout << "\033[1;36m\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Operator tests >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
-	vector_operator_tests();
-	std::cout << "\033[1;36m\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Iterator functions tests >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
-	iterator_functions_tests();
-	std::cout << "\033[1;36m\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Capacity functions tests >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
-	capacity_functions_tests();
-	std::cout << "\033[1;36m\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Element acces functions tests >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
-	element_functions_tests();
-	std::cout << "\033[1;36m\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Modifier functions tests >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
-	modifier_functions_tests();
-	std::cout << "\033[1;36m\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Get allocator test >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
-	get_allocator_test();
-	std::cout << "\033[1;36m\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Non memeber functions test >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
-	non_member_functions_tests();
-	
-    std::cout << "\033[1;36m\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m\n\n";
+	std::cout << CYAN << "\tTesting Constructors" << RESET << std::endl;
+	TEST_CASE(vector_constructor_tests);
+	sleep(1);
+	std::cout << CYAN << "\tTesting Operators" << RESET << std::endl;
+	TEST_CASE(vector_operator_tests);
+	sleep(1);
+	std::cout << CYAN << "\tTesting Iterator Functions" << RESET << std::endl;
+	TEST_CASE(iterator_functions_tests);
+	sleep(1);
+	std::cout << CYAN << "\tTesting Capacity Functions" << RESET << std::endl;
+	TEST_CASE(capacity_functions_tests);
+	sleep(1);
+	std::cout << CYAN << "\tTesting Element Access Functions" << RESET << std::endl;
+	TEST_CASE(element_functions_tests);
+	sleep(1);
+	std::cout << CYAN << "\tTesting Modifier Functions" << RESET << std::endl;
+	TEST_CASE(modifier_functions_tests);
+	sleep(1);
+	std::cout << CYAN << "\tTesting Get Allocator Function" << RESET << std::endl;
+	TEST_CASE(get_allocator_test);
+	sleep(1);
+	std::cout << CYAN << "\tTesting Non Member Functions" << RESET << std::endl;
+	TEST_CASE(non_member_functions_tests);
 }
 
 void alarm_handler(int seg)
@@ -64,13 +67,22 @@ void alarm_handler(int seg)
 
 int main(void)
 {
-	std::cout << RED << "*------------------------ Testing the vector ------------------------*" << RESET << std::endl;
     signal(SIGALRM, alarm_handler);
-    iterator_tests();
+
+	std::cout << "\n\t\t\t\033[093;1m*.................................*";
+	std::cout << "\n\t\t\t*                                 *";
+	std::cout << "\n\t\t\t*\t    VECTOR TEST           *";
+	std::cout << "\n\t\t\t*                                 *";
+	std::cout << "\n\t\t\t\033[093;1m*.................................*\033[0m\n\n";
+
+	std::cout << CYAN << "\tTesting Iterator" << RESET << std::endl;
+    TEST_CASE(iterator_tests);
 	sleep(1);
-    const_iterator_tests();
+	std::cout << CYAN << "\tTesting Const Iterator" << RESET << std::endl;
+    TEST_CASE(const_iterator_tests);
 	sleep(1);
-    reverse_iterator_tests();
+	std::cout << CYAN << "\tTesting Reverse Iterator" << RESET << std::endl;
+    TEST_CASE(reverse_iterator_tests);
 	sleep(1);
     vector_tests();
 
