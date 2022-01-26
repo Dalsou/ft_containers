@@ -301,11 +301,11 @@ namespace ft {
                     if (n > this->_capacity) {
                         reserve(n);
                         for (; this->_size < n ; this->_size++)
-                            this->_data[this->_size] = val;
+							this->_alloc.construct(&this->_data[this->_size], val);
                     }
                     else
                         for (; this->_size < n ; this->_size++)
-                            this->_data[this->_size] = val;
+							this->_alloc.construct(&this->_data[this->_size], val);
                 }   
                 else
                     for (size_t i = this->_size; i > n; i--)
@@ -408,9 +408,9 @@ namespace ft {
 
 			// pop_back
 			void	pop_back() {
-				if (this->_size) {
-					this->_alloc.destroy(&this->_data[this->_size]);
-					--this->_size;
+				if (this->_size > 0) {
+					this->_alloc.destroy(&this->_data[this->_size - 1]);
+					this->_size--;
 				}
 			};
 
