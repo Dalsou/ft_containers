@@ -55,9 +55,6 @@ void testOperations()
         }
         std::vector<int> vec;
         std::vector<int> ft_vec;
-        std::random_device randDev;
-        std::mt19937 generator(randDev());
-        std::uniform_int_distribution<int> distr(0, 1e8);
 
         std::map<int, std::string> m1;
         ft::map<int, std::string> ft_m1;
@@ -72,7 +69,8 @@ void testOperations()
 
         for (size_t i = 0; i < 1000; i++)
         {
-            int n = distr(generator);
+            srand (time(NULL));
+            int n = rand() % 1000;
             it = m1.find(n);
             ft_it = ft_m1.find(n);
             if (it == m1.end() && ft_it == ft_m1.end())

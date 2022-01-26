@@ -13,9 +13,9 @@
 #ifndef MAP_TESTS_HPP
 #define MAP_TESTS_HPP
 
-#include "../../stack/stack.hpp"       // your stack path.
-#include "../../vector/vector.hpp" // your Vector path.
-#include "../../map/map.hpp"  // path to ft::pair.
+#include "../../stack/stack.hpp"
+#include "../../vector/vector.hpp"
+#include "../../map/map.hpp"
 
 #include <map>
 #include <vector>
@@ -27,7 +27,8 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/time.h>
-#include <random>
+#include <stdlib.h>
+#include <time.h>
 
 #define RESET "\e[0m"
 #define MAGENTA "\e[1;95m"

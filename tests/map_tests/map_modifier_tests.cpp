@@ -190,9 +190,6 @@ void testModifiers()
         ft::map<int, std::string> ft_m3;
         std::vector<int> vec;
         std::vector<int> ft_vec;
-        std::random_device randDev;
-        std::mt19937 generator(randDev());
-        std::uniform_int_distribution<int> distr(0, 1e8);
 
         for (size_t i = 0; i < 100; i++)
         {
