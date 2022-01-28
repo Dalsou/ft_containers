@@ -6,7 +6,11 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 14:31:50 by afoulqui          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/01/28 15:22:46 by afoulqui         ###   ########.fr       */
+=======
+/*   Updated: 2022/01/20 17:09:46 by afoulqui         ###   ########.fr       */
+>>>>>>> 99fce3a08d0e02c3faef2a6da007aef3a8d49703
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +28,10 @@ namespace ft {
     template <class T>
     struct rb_node {
 
+<<<<<<< HEAD
+=======
+        typedef T  value_type;
+>>>>>>> 99fce3a08d0e02c3faef2a6da007aef3a8d49703
         rb_node*   parent;
         rb_node*   left;
         rb_node*   right;
@@ -36,16 +44,23 @@ namespace ft {
 
     }; // struct rb_node
 
+<<<<<<< HEAD
     template <  class Key,
 				class T,
                 class Compare = std::less<Key>,
                 class  Allocator = std::allocator<ft::pair<const Key, T> > >
+=======
+    template <  class T,
+                class Compare,
+                class  Allocator = std::allocator<rb_node<T> > >
+>>>>>>> 99fce3a08d0e02c3faef2a6da007aef3a8d49703
     class rb_tree {
 
         public :
 
         // ******************** ALIASES ******************** //
 
+<<<<<<< HEAD
 			typedef ft::pair<const Key, T> 				value_type;
         	typedef Key 								key_type;
 			typedef T 									mapped_type;
@@ -56,6 +71,15 @@ namespace ft {
             typedef rb_node<value_type>                 node;
             typedef node*                               node_ptr;
             typedef std::ptrdiff_t                     	difference_type;
+=======
+            typedef Compare                             compare;
+            typedef Allocator                           allocator;
+            typedef T                                   value_type;
+            typedef size_t                              size_type;
+            typedef rb_node<value_type>                 node;
+            typedef node*                               node_ptr;
+            typedef  std::ptrdiff_t                     difference_type;
+>>>>>>> 99fce3a08d0e02c3faef2a6da007aef3a8d49703
 
             typedef ft::rbtree_iterator<node>           iterator;
             typedef ft::rbtree_iterator<node>           const_iterator;

@@ -41,9 +41,15 @@ namespace ft {
             rbtree_iterator(const rbtree_iterator& src) :
             node(src.node), root(src.root), NIL(src.NIL) {}
 
+<<<<<<< HEAD
             // operator rbtree_iterator<value_type const>() const {
             //     return rbtree_iterator<value_type const>(node, root, NIL);
             // }
+=======
+            operator rbtree_iterator<value_type const>() const {
+                return rbtree_iterator<value_type const>(node, root, NIL);
+            }
+>>>>>>> 99fce3a08d0e02c3faef2a6da007aef3a8d49703
 
             rbtree_iterator& operator=(const rbtree_iterator &op) {
                 if (this != &op) {
@@ -69,6 +75,7 @@ namespace ft {
             }
 
             const_reference operator*() const {
+<<<<<<< HEAD
                 return node->data;
             }
 
@@ -78,6 +85,17 @@ namespace ft {
 
             const_pointer operator->() const {
                 return &(node->data);
+=======
+                return (node->data);
+            }
+
+            pointer operator->() {
+                return &(operator*());
+            }
+
+            const_pointer operator->() const {
+                return &(operator*());
+>>>>>>> 99fce3a08d0e02c3faef2a6da007aef3a8d49703
             }
 
         /* ------------------------ INCREMENT ----------------------- */
