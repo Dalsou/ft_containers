@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/14 15:42:27 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/19 16:55:14 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/28 15:00:43 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ namespace ft {
 		public : 
 			typedef Iterator												iterator_type;
 			typedef typename iterator_traits<Iterator>::difference_type		difference_type;
+			typedef typename iterator_traits<Iterator>::iterator_category	iterator_category;
 			typedef typename iterator_traits<Iterator>::reference			reference;
 			typedef typename iterator_traits<Iterator>::pointer				pointer;
 			typedef typename iterator_traits<Iterator>::value_type			value_type;
@@ -37,10 +38,10 @@ namespace ft {
 			reverse_iterator() : _base() {};
 			reverse_iterator(Iterator base) : _base(base) {};
 			Iterator base() const { return this->_base; };
-			template <class U>
-			reverse_iterator(const reverse_iterator<U> &src) : _base(src.base()) {};
-			template <class U>
-			reverse_iterator<Iterator>& operator=(const reverse_iterator<U>& op) {
+			template <class Iter>
+			reverse_iterator(const reverse_iterator<Iter> &src) : _base(src.base()) {};
+			template <class Iter>
+			reverse_iterator<Iterator>& operator=(const reverse_iterator<Iter>& op) {
 				if (reinterpret_cast<const void *>(this) == reinterpret_cast<const void *>(&op))
 					return *this;
 				this->_base = op.base();
@@ -74,8 +75,8 @@ namespace ft {
 			};
 
 			// Range's lenght between this random_iterator and another one.
-			template <class U>
-			difference_type	operator-(const reverse_iterator<U> &u) { 
+			template <class Iter>
+			difference_type	operator-(const reverse_iterator<Iter> &u) { 
 				return u.base().operator-(this->_base);
 			};
 
@@ -106,33 +107,33 @@ namespace ft {
 			};
 
 			// Comparaison operators
-			template <class U>
-			bool operator==(const reverse_iterator<U> &rhs) const {
+			template <class Iter>
+			bool operator==(const reverse_iterator<Iter> &rhs) const {
 				return this->_base.operator==(rhs.base());
 			};
 
-			template <class U>
-			bool operator!=(const reverse_iterator<U> &rhs) const {
+			template <class Iter>
+			bool operator!=(const reverse_iterator<Iter> &rhs) const {
 				return this->_base.operator!=(rhs.base());
 			};
 
-			template <class U>
-			bool operator<(const reverse_iterator<U> &rhs)
+			template <class Iter>
+			bool operator<(const reverse_iterator<Iter> &rhs)
 				const { return this->_base.operator> (rhs.base());
 			};
 
-			template <class U>
-			bool operator<=(const reverse_iterator<U> &rhs) const {
+			template <class Iter>
+			bool operator<=(const reverse_iterator<Iter> &rhs) const {
 				return this->_base.operator>=(rhs.base());
 			};
 
-			template <class U>
-			bool	operator>(const reverse_iterator<U> &rhs) const {
+			template <class Iter>
+			bool	operator>(const reverse_iterator<Iter> &rhs) const {
 				return this->_base.operator< (rhs.base());
 			};
 			
-			template <class U>
-			bool	operator>=(const reverse_iterator<U> &rhs) const {
+			template <class Iter>
+			bool	operator>=(const reverse_iterator<Iter> &rhs) const {
 				return this->_base.operator<=(rhs.base());
 			};
 	

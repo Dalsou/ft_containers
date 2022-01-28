@@ -6,14 +6,23 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/19 14:31:50 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/20 17:09:46 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/28 14:44:50 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ITERATOR_TRAITS_HPP
 #define ITERATOR_TRAITS_HPP
 
+#include <cstddef>
+#include <iostream>
+
 namespace ft {
+
+	struct input_iterator_tag {};
+	struct output_iterator_tag {};
+	struct forward_iterator_tag : public input_iterator_tag {};
+	struct bidirectional_iterator_tag : public forward_iterator_tag {};
+	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
 	template <class Iterator> 
 	class iterator_traits {
