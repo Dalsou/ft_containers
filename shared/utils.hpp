@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:20:01 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/19 17:11:28 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/28 15:47:52 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,14 @@ namespace ft {
 	template <> struct is_integral<unsigned long int> { static const bool value = true; };
 	template <> struct is_integral<unsigned long long int> { static const bool value = true; };
 
+	template <bool flag, class IsTrue, class IsFalse>	
+	struct is_const {};
+
+	template<class IsTrue, class IsFalse>
+	struct is_const<true, IsTrue, IsFalse> { typedef IsTrue value; };
+
+	template<class IsTrue, class IsFalse>
+	struct is_const<false, IsTrue, IsFalse> { typedef IsFalse value; };
 } // namespace ft
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 15:49:33 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/28 11:43:01 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/01/28 18:05:15 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@
 
 namespace ft {
 
-	template < class Key,
-		   class T,
-		   class Compare = std::less<Key>,
-		   class Allocator = std::allocator<ft::pair<Key, T> >
+	template < class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<Key, T> >
 		   >
 	class map {
 
@@ -188,7 +185,7 @@ namespace ft {
 			}
 
 			template <class Ite>
-			void	insert(Ite first, Ite last) {
+			void	insert(Ite first, Ite last, typename enable_if<!is_integral<Ite>::value,Ite >::type = Ite()) {
 				for (;  first != last; ++first)
 					this->_tree.insert(*first);
 			}

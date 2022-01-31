@@ -1,11 +1,12 @@
 #ifndef RBTREE_ITERATOR_HPP
 #define RBTREE_ITERATOR_HPP
 
-#include <iterator>
+#include <iostream>
+#include "utils.hpp"
 
 namespace ft {
 
-    template <class T>
+    template <typename T>
     class rbtree_iterator {
 
         public:
@@ -13,7 +14,7 @@ namespace ft {
         /* ------------------------ ALIASES ----------------------- */
             typedef T                               value_type;
             typedef value_type*                     node_ptr;
-            typedef typename T::value_type const    data_type;
+            typedef typename T::value_type	 		data_type;
             typedef data_type&                      reference;
             typedef const data_type&                const_reference;
             typedef data_type*                      pointer;
@@ -41,15 +42,6 @@ namespace ft {
             rbtree_iterator(const rbtree_iterator& src) :
             node(src.node), root(src.root), NIL(src.NIL) {}
 
-<<<<<<< HEAD
-            // operator rbtree_iterator<value_type const>() const {
-            //     return rbtree_iterator<value_type const>(node, root, NIL);
-            // }
-=======
-            operator rbtree_iterator<value_type const>() const {
-                return rbtree_iterator<value_type const>(node, root, NIL);
-            }
->>>>>>> 99fce3a08d0e02c3faef2a6da007aef3a8d49703
 
             rbtree_iterator& operator=(const rbtree_iterator &op) {
                 if (this != &op) {
@@ -75,17 +67,6 @@ namespace ft {
             }
 
             const_reference operator*() const {
-<<<<<<< HEAD
-                return node->data;
-            }
-
-            pointer operator->() {
-                return &(node->data);
-            }
-
-            const_pointer operator->() const {
-                return &(node->data);
-=======
                 return (node->data);
             }
 
@@ -95,7 +76,6 @@ namespace ft {
 
             const_pointer operator->() const {
                 return &(operator*());
->>>>>>> 99fce3a08d0e02c3faef2a6da007aef3a8d49703
             }
 
         /* ------------------------ INCREMENT ----------------------- */
@@ -145,14 +125,14 @@ namespace ft {
             }
 
             node_ptr    _prev() {
-                node_ptr    node = node;
+                node_ptr    n = node;
                 node_ptr    prev = this->NIL;
 
-                if (node->left != this->NIL)
-                    return this->_max(node->left);
-                prev = node->parent;
-                while (prev != this->NIL && node == prev->left) {
-                    node = prev;
+                if (n->left != this->NIL)
+                    return this->_max(n->left);
+                prev = n->parent;
+                while (prev != this->NIL && n == prev->left) {
+                    n = prev;
                     prev = prev->parent;
                 }
                 return prev;
@@ -173,7 +153,6 @@ namespace ft {
             }
 
     }; // class rbtree_iterator 
-
 } // namespace ft
 
 #endif
