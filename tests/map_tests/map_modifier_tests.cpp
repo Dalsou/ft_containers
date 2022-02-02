@@ -99,7 +99,7 @@ void testModifiers()
             /*------------------ std::maps ---------------------*/
             std::map<int, std::string> m1;
             ft::map<int, std::string> ft_m1;
-            for (size_t i = 0; i < 10000; i++)
+            for (size_t i = 0; i < 1000; i++)
             {
                 m1.insert(std::make_pair(i, "string2"));
                 ft_m1.insert(ft::make_pair(i, "string2"));
