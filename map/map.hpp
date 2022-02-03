@@ -105,7 +105,7 @@ namespace ft {
 				_clearTree(this->_root);
 			}
 
-        	map &operator=(const map& op) {
+        	map& operator=(const map& op) {
             	if (this == &op)
 					return *this;
             	_clearTree(this->_root);
@@ -123,7 +123,7 @@ namespace ft {
 
         	    while (tmp && tmp->left)
         	        tmp = tmp->left;
-        	    return tmp;
+        	    return iterator(tmp);
         	}
 
         	const_iterator begin() const {
@@ -147,7 +147,7 @@ namespace ft {
         	    
 				while (tmp && !tmp->color)
         	        tmp = tmp->right;
-        	    return tmp;
+        	    return iterator(tmp);
         	}
 
         	const_iterator end() const {
@@ -187,14 +187,14 @@ namespace ft {
         	    return this->_size;
         	}
 
-        	size_type max_size() const {
-        	    return this->_allocator.max_size();
-        	}
+			size_type max_size() const {
+				return this->_allocator.max_size();
+			}
 
 		// ******************** Element Access ******************** //
 
 		    mapped_type& operator[](const key_type& k) {
-        	    node_type*	tmp = _recursiveFindKey(k, this->_root);
+        	    node_type*	tmp = this->_recursiveFindKey(k, this->_root);
 
         	    if (tmp)
         	        return tmp->value.second;
@@ -205,7 +205,7 @@ namespace ft {
 	// 	// ******************** Modifiers ******************** //
 
         	//Insert one element
-        	ft::pair<iterator, bool>	insert(const value_type &val) {
+        	ft::pair<iterator, bool>	insert(const value_type& val) {
         	    size_type 	backup = this->_getSize();
 
         	    this->_insertNodeFromRoot(val, this->_root);
@@ -213,10 +213,10 @@ namespace ft {
         	}
 
         	//insert with hint
-        	iterator	insert(iterator position, const value_type &val) {
+        	iterator	insert(iterator position, const value_type& val) {
         	    (void)position;
-        	    _insertNodeFromRoot(val, this->_root);
-        	    return iterator(_recursiveFindKey(val.first, this->_root));
+        	    this->_insertNodeFromRoot(val, this->_root);
+        	    return iterator(this->_recursiveFindKey(val.first, this->_root));
         	}
 
         	//insert range
@@ -235,7 +235,7 @@ namespace ft {
         	size_type erase(const key_type& k) {
         	    size_type	backup = this->_size;
 
-        	    this->_root = _deleteNode(this->_root, k);
+        	    this->_root = this->_deleteNode(this->_root, k);
         	    return (backup - this->_size);
         	}
 
@@ -246,7 +246,7 @@ namespace ft {
         	    iterator 					ite = tmp.end();
 
         	    for (; it != ite; it++)
-        	        this->_root = _deleteNode(this->_root, it->first);
+        	        this->_root = this->_deleteNode(this->_root, it->first);
         	}
 
 			void swap(map& x) {
@@ -268,7 +268,7 @@ namespace ft {
         	}
 
 			void clear() {
-            	_setSize(0);
+            	this->_setSize(0);
         	}
 
 		// ******************** Observers ******************** //
@@ -284,7 +284,7 @@ namespace ft {
 		// ******************** Operations ******************** //
 		
        		iterator find(const key_type& k) {
-        	    node_type *tmp = _recursiveFindKey(k, this->_root);
+        	    node_type *tmp = this->_recursiveFindKey(k, this->_root);
 
         	    if (tmp)
         	        return (iterator(tmp));
@@ -293,7 +293,7 @@ namespace ft {
 
         	const_iterator find(const key_type& k) const
         	{
-        	    node_type *tmp = _recursiveFindKey(k, this->_root);
+        	    node_type *tmp = this->_recursiveFindKey(k, this->_root);
 
         	    if (tmp)
         	        return const_iterator(tmp);
@@ -319,7 +319,7 @@ namespace ft {
         	    iterator it = this->begin();
 
         	    while (it != ite) {
-        	        if (!_key_compare(it->first, k))
+        	        if (!this->_key_compare(it->first, k))
         	            return (it);
         	        it++;
         	    }
@@ -331,7 +331,7 @@ namespace ft {
         	    const_iterator it = this->begin();
 
         	    while (it != ite) {
-        	        if (!_key_compare(it->first, k))
+        	        if (!this->_key_compare(it->first, k))
         	            return (it);
         	        it++;
         	    }
@@ -343,7 +343,7 @@ namespace ft {
         	    iterator ite = this->end();
 
         	    while (it != ite) {
-        	        if (_key_compare(k, it->first))
+        	        if (this->_key_compare(k, it->first))
         	            return (it);
         	        it++;
         	    }
@@ -355,7 +355,7 @@ namespace ft {
         	    const_iterator ite = this->end();
 
         	    while (it != ite) {
-        	        if (_key_compare(k, it->first))
+        	        if (this->_key_compare(k, it->first))
         	            return (it);
         	        it++;
         	    }
@@ -403,7 +403,7 @@ namespace ft {
 	
 				this->_allocator.construct(tmp, node_type(val, NULL, NULL, parent, false));
         	    this->_size++;
-        	    return (tmp);
+        	    return tmp;
         	}
 
         	void _initialize() {
@@ -414,19 +414,18 @@ namespace ft {
 
         	node_type* _insertNode(const value_type& val, node_type* current, node_type* parent) {
         	    if (!current)
-        	        return _addNode(val, parent);
-        	    if (current->color)
-        	    {
-        	        node_type *to_insert = _addNode(val, parent);
+        	        return this->_addNode(val, parent);
+        	    if (current->color) {
+        	        node_type *to_insert = this->_addNode(val, parent);
         	        current->parent = to_insert;
         	        to_insert->right = current;
         	        current = to_insert;
         	        return current;
         	    }
         	    if (_key_compare(val.first, current->value.first))
-        	        current->left = _insertNode(val, current->left, current);
+        	        current->left = this->_insertNode(val, current->left, current);
         	    else if (_key_compare(current->value.first, val.first))
-        	        current->right = _insertNode(val, current->right, current);
+        	        current->right = this->_insertNode(val, current->right, current);
         	    return current;
         	}
 
@@ -438,36 +437,33 @@ namespace ft {
         	    return current;
         	}
 
-        	node_type* _maxValueNode(node_type *node) {
-        	    node_type *current = node;
+        	node_type* _maxValueNode(node_type* node) {
+        	    node_type* current = node; 
+
         	    while (current->right != NULL)
         	        current = current->right;
         	    return current;
         	}
 
-        	node_type* _deleteNode(node_type *current, const key_type &key) {
+        	node_type* _deleteNode(node_type* current, const key_type& key) {
         	    if (!current || current->color)
         	        return current;
-        	    if (this->_key_compare(key, current->value.first)) //si la cle correspond a l enfant plus petit
-        	        current->left = _deleteNode(current->left, key);
-        	    else if (this->_key_compare(current->value.first, key)) //si la cle correspond a l enfant plus grand
-        	        current->right = _deleteNode(current->right, key);
-        	    else
-        	    {
-        	        //Si le node n a pas deux enfants
-        	        if (!current->left || !current->right)
-        	        {
+        	    if (this->_key_compare(key, current->value.first)) 
+        	        current->left = this->_deleteNode(current->left, key);
+        	    else if (this->_key_compare(current->value.first, key))
+        	        current->right = this->_deleteNode(current->right, key);
+        	    else {
+        	        if (!current->left || !current->right) {
         	            node_type *tmp = current->left ? current->left : current->right;
-        	            if (!current->left && !current->right)
-        	            {
+
+        	            if (!current->left && !current->right) {
         	                tmp = current;
         	                this->_allocator.destroy(tmp);
         	                this->_allocator.deallocate(tmp, 1);
         	                current = NULL;
         	                this->_size--;
         	            }
-        	            else
-        	            {
+        	            else {
         	                tmp->parent = current->parent;
         	                node_type *tmp2 = current;
         	                current = tmp;
@@ -476,12 +472,10 @@ namespace ft {
         	                this->_size--;
         	            }
         	        }
-        	        //Necessaires pour le erase2 et tricky erase
-        	        else
-        	        {
+        	        else {
         	            node_type *tmp = _minValueNode(current->right);
-        	            if (tmp != current->right)
-        	            {
+
+        	            if (tmp != current->right) {
         	                tmp->right = current->right;
         	                current->right->parent = tmp;
         	            }
@@ -501,34 +495,33 @@ namespace ft {
         	}
 
         	node_type* _insertNodeFromRoot(const value_type &val, node_type *current, node_type *parent = NULL) {
-        	    if (!this->_root) // Si l'arbre est vide (root pas alloue et construit)
-        	    {
-        	        this->_root = _addNode(val, NULL);
-        	        node_type *last = _addNode(value_type(key_type(), mapped_type()), this->_root);
+        	    if (!this->_root) {
+        	        this->_root = this->_addNode(val, NULL);
+        	        node_type *last = this->_addNode(value_type(key_type(), mapped_type()), this->_root);
+
         	        this->_size--;
         	        this->_root->right = last;
         	        last->color = true;
         	        return (this->_root);
         	    }
-        	    if (this->_root->color) //Si root est le seul element
-        	    {
-        	        node_type *new_root = _addNode(val, NULL);
+        	    if (this->_root->color) {
+        	        node_type *new_root = this->_addNode(val, NULL);
+
         	        this->_root->parent = new_root;
         	        new_root->right = this->_root;
         	        this->_root = new_root;
         	        return (this->_root);
         	    }
-        	    //Si ne correspond pas aux deux cas precedents
-        	    return _insertNode(val, current, parent);
+        	    return this->_insertNode(val, current, parent);
         	}
 
         	node_type* _recursiveFindKey(const key_type &key, node_type *current) const {
         	    if (!current || current->color)
         	        return NULL;
         	    if (this->_key_compare(key, current->value.first))
-        	        return _recursiveFindKey(key, current->left);
+        	        return this->_recursiveFindKey(key, current->left);
         	    else if (this->_key_compare(current->value.first, key))
-        	        return _recursiveFindKey(key, current->right);
+        	        return this->_recursiveFindKey(key, current->right);
         	    else
         	        return current;
         	}

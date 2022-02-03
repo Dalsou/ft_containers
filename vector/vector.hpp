@@ -40,74 +40,77 @@ namespace ft {
 		
 			protected:
 				typedef random_iterator<value_type> iter;
-				iterator(value_type *src) : random_iterator<value_type>(src) {};
+				iterator(value_type *src) : random_iterator<value_type>(src) {}
 		
 			private:
-				iterator(const random_iterator<value_type> &src) : random_iterator<value_type>(src) {};
+				iterator(const random_iterator<value_type> &src) : random_iterator<value_type>(src) {}
 
 			public:
 				iterator() : random_iterator<value_type>() {};
-				iterator(const iterator &src) : random_iterator<value_type>(src) {};
+				iterator(const iterator &src) : random_iterator<value_type>(src) {}
 
 				typedef value_type&			reference;
 				typedef value_type*			pointer;
 
 				reference	operator*() const {
 					return *this->_value;
-				};
+				}
 
 				pointer	operator->() const {
 					return this->_value;
-				};
+				}
 
 				iterator&	operator+=(difference_type n) {
 					this->_value += n;
 					return *this;
-				};
+				}
+
 				iterator&	operator-=(difference_type n) {
 					this->_value -= n;
 					return *this;
-				};
+				}
+
 				reference	operator[](difference_type n) const {
 					return this->_value[n];
-				};
+				}
 
 				// Increment
 				iterator&	operator++() {
 					iter::operator++();
 					return *this;
-				};
+				}
 
 				iterator	operator++(int) {
 					return iter::operator++(0);
-				};
+				}
 
 				// Decrement
 				iterator&	operator--() {
 					iter::operator--();
 					return *this; 
-				};
+				}
+
 				iterator	operator--(int) {
 					return iter::operator--(0);
-				};
+				}
 
 				// Increment by n
 				iterator	operator+(difference_type n) const {
 					return iter::operator+(n);
-				};
+				}
 
 				// Decrement by n
 				iterator	operator-(difference_type n) const {
 					return iter::operator-(n);
-				};
+				}
 
 				difference_type	operator-(const random_iterator<value_type> &n) const { 
 					return iter::operator-(n);
-				};
+				}
 
 				friend iterator	operator+(difference_type n, const iterator &it) { 
 					return it.operator+(n);
-				};
+				}
 
 				friend class vector;
 			
@@ -130,63 +133,63 @@ namespace ft {
 
 				reference	operator*() const {
 					return *this->_value;
-				};
+				}
 
 				pointer	operator->() const {
 					return this->_value;
-				};
+				}
 
 				const_iterator&	operator+=(difference_type n) {
 					this->_value += n;
 					return *this;
-				};
+				}
 
 				const_iterator&	operator-=(difference_type n) {
 					this->_value -= n;
 					return *this;
-				};
+				}
 
 				reference	operator[](difference_type n) const {
 					return this->_value[n];
-				};
+				}
 
 				// Increment				
 				const_iterator&	operator++() {
 					iter::operator++();
 					return *this;
-				};
+				}
 
 				const_iterator	operator++(int) {
 					return iter::operator++(0);
-				};
+				}
 
 				// Decrement
 				const_iterator&	operator--() {
 					iter::operator--();
 					return *this;
-				};
+				}
 
 				const_iterator	operator--(int) {
 					return iter::operator--(0);
-				};
+				}
 
 				// Increment by n
 				const_iterator	operator+(difference_type n) const {
 					return iter::operator+(n);
-				};
+				}
 
 				// Decrement by n
 				const_iterator	operator-(difference_type n) const {
 					return iter::operator-(n);
-				};
+				}
 				
 				difference_type	operator-(const random_iterator<value_type> &n) const {
 					return iter::operator-(n);
-				};
+				}
 
 				friend const_iterator	operator+(difference_type n, const const_iterator &it) {
 					return it.operator+(n);
-				};
+				}
 
 				friend class vector;
 
@@ -216,27 +219,27 @@ namespace ft {
 			// Destructor
 			virtual ~vector() {
 				this->_alloc.deallocate(this->_data, this->_capacity);
-			};
+			}
 
 			// Constructor
 			explicit vector(size_type size, const value_type& value = value_type(),
 							const allocator_type& alloc = allocator_type()) :
 			_data(NULL), _alloc(alloc), _size(0), _capacity(0) {
 				this->_createData(size, value);
-			};
+			}
 
 			// Constructor Iterator Range
 			template <class Ite>
 			vector(Ite first, Ite last, const allocator_type& alloc = allocator_type(), typename enable_if<!is_integral<Ite>::value,Ite >::type = Ite()) :
 			_data(NULL), _alloc(alloc), _size(0), _capacity(0) {
 				this->_createData(this->_getItLen(first, last), first, last);
-			};
+			}
 	
 			// Copy constructor
 			vector(const vector &src) :
 			_data(NULL), _alloc(allocator_type()), _size(0), _capacity(0) {
 				*this = src;
-			};
+			}
 
 			// Assignment Operator
 			vector	&operator=(vector const &op) {
@@ -247,53 +250,57 @@ namespace ft {
 				size_type len = this->_getItLen(first, last);
 				this->_createData((len > this->_capacity) ? len : this->_capacity, first, last);
 				return *this;
-			};
+			}
 
 			// ******************** Iterators ******************** //
 
 			// begin
 			iterator		begin() {
 				return iterator(this->_data);
-			};
+			}
+
 			const_iterator	begin() const {
 				return const_iterator(this->_data);
-			};
+			}
 
 			// end
 			iterator		end() {
 				return iterator(&this->_data[this->_size]);
-			};
+			}
+
 			const_iterator	end() const {
 				return const_iterator(&this->_data[this->_size]);
-			};
+			}
 
 			// rbegin
 			reverse_iterator		rbegin() {
 				return reverse_iterator(&this->_data[this->_size]);
-			};
+			}
+
 			const_reverse_iterator	rbegin() const {
 				return const_reverse_iterator(&this->_data[this->_size]);
-			};
+			}
 
 			// rend
 			reverse_iterator		rend() {
 				return reverse_iterator(this->_data);
-			};
+			}
+
 			const_reverse_iterator	rend() const {
 				return const_reverse_iterator(this->_data);
-			};
+			}
 
 			// ******************** Capacity ******************** //
 
 			// size
 			size_type	size() const {
 				return this->_size;
-			};
+			}
 
 			// max_size
 			size_type	max_size() const {
 				return this->_alloc.max_size();
-			};
+			}
 
 			// resize
 			void	resize(size_type n, value_type val = value_type()) {
@@ -310,19 +317,19 @@ namespace ft {
                 else
                     for (size_t i = this->_size; i > n; i--)
                         this->_data[this->_size--].~value_type();
-			};
+			}
 
 			// capacity
 			size_type	capacity() const {
 				return this->_capacity;
-			};
+			}
 
 			// empty
 			bool		empty() const {
 				if (this->_size == 0)
 					return true;
 				return false;
-			};
+			}
 
 			// reserve
 			void	reserve(size_type n) {
@@ -336,17 +343,18 @@ namespace ft {
                 this->~vector();
                 this->_capacity = n;
                 this->_data = tmp;
-			};
+			}
 
 			// ******************** Element Access ******************** //
 
 			// operator[]
 			reference			operator[](size_type n) {
 				return this->_data[n];
-			};
+			}
+
 			const_reference		operator[](size_type n) const {
 				return this->_data[n];
-			};
+			}
 
 			// at
 			reference			at(size_type n) {
@@ -354,27 +362,31 @@ namespace ft {
                     throw std::out_of_range("Out of Range error");
                 return (this->_data[n]);
             }
+
 			const_reference		at(size_type n) const {
                if (n > this->_size)
                     throw std::out_of_range("Out of Range error");
                 return (this->_data[n]);
-			};
+			}
 
 			// front
 			reference			front() {
 				return (*this)[0];
-			};
+			}
+
 			const_reference		front() const {
 				return (*this)[0];
-			};
+			}
+		
 
 			// back
 			reference			back() {
 				return (*this)[this->_size - 1];
-			};
+			}
+
 			const_reference		back() const {
 				return (*this)[this->_size - 1];
-			};
+			}
 
 			// ******************** Modifiers ******************** //
 
@@ -385,7 +397,7 @@ namespace ft {
                 for (size_type i = 0; i < n; i++)
                     this->_alloc.construct(&this->_data[i], val);
                 this->_size = n;
-			};
+			}
 
 			template <class Ite>
 			void	assign(Ite first, Ite last,  typename enable_if<!is_integral<Ite>::value,Ite >::type = Ite()) {
@@ -394,7 +406,7 @@ namespace ft {
 				this->_size = 0;
 				while (first != last)
 					this->_alloc.construct(&this->_data[this->_size++], *first++);
-			};
+			}
 
 			// push_back
 			void	push_back(const value_type& val) {
@@ -404,7 +416,7 @@ namespace ft {
 					reserve(this->_capacity * 2);
 				this->_alloc.construct(&this->_data[this->_size], val);
 				this->_size++;
-			};
+			}
 
 			// pop_back
 			void	pop_back() {
@@ -412,14 +424,14 @@ namespace ft {
 					this->_alloc.destroy(&this->_data[this->_size - 1]);
 					this->_size--;
 				}
-			};
+			}
 
 			// insert
 			iterator	insert(iterator position, const value_type &val) {
 				difference_type i = position - this->begin();
 				this->insert(position, 1, val);
 				return iterator(&this->_data[i]);
-			};
+			}
 
 			void	insert(iterator position, size_type n, const value_type &val) {
 				difference_type	d = position - this->begin();
@@ -439,7 +451,7 @@ namespace ft {
                 for (size_type i = 0; i < n; i++)
                     this->_alloc.construct(&this->_data[j++], val);
                 this->_size += n;
-			};
+			}
 			
 			template <class Ite>
 			void	insert(iterator position, Ite first, Ite last, typename enable_if<!is_integral<Ite>::value,Ite >::type = Ite()) {
@@ -464,12 +476,12 @@ namespace ft {
                     first++;
                 }
                 this->_size += n;
-			};
+			}
 			
 			// erase
 			iterator	erase(iterator ite) {
 				return this->erase(ite, ite + 1);
-			};
+			}
 
 			iterator	erase(iterator first, iterator last) {
 				iterator	tmp = first;
@@ -486,7 +498,7 @@ namespace ft {
 					deleted--;
 				}
 				return tmp;
-			};
+			}
 
 			// swap
 			void	swap(vector &x) {
@@ -495,13 +507,13 @@ namespace ft {
 				tmp._copyContent(x);
 				x._copyContent(*this);
 				this->_copyContent(tmp);
-			};
+			}
 
 			// clear
 			void	clear() {
 				while (this->_size > 0)
 					this->_alloc.destroy(&this->_data[--this->_size]);
-			};
+			}
 
 			allocator_type	get_allocator() const {
 				return this->_alloc;
@@ -518,7 +530,7 @@ namespace ft {
 					i++;
 				}
 				return (i);
-			};
+			}
 
 			// create data
 			template <class Ite>
@@ -535,7 +547,7 @@ namespace ft {
 					res._alloc.construct(&res._data[i++], *first);
 				this->_destroyData();
 				this->_copyContent(res);
-			};
+			}
 
 			void	_createData(size_type size, const value_type &val = value_type()) {
 				this->_destroyData();
@@ -544,7 +556,7 @@ namespace ft {
 					this->_alloc.construct(&this->_data[i], val);
 				this->_size = size;
 				this->_capacity = size;
-			};
+			}
 
 			// destroy data	
 			void	_destroyData() {
@@ -553,7 +565,7 @@ namespace ft {
 				this->clear();
 				this->_alloc.deallocate(this->_data, this->_capacity);
 				this->_data = NULL; this->_size = 0; this->_capacity = 0;
-			};
+			}
 
 			// copy content	
 			void	_copyContent(vector &vec) {
@@ -564,7 +576,7 @@ namespace ft {
 				vec._data = NULL;
 				vec._size = 0;
 				vec._capacity = 0;
-			};
+			}
 
 	}; // class vector
 
@@ -573,7 +585,7 @@ namespace ft {
 	if (lhs.size() != rhs.size())
 		return false;
 	return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
-}
+	}
 
 	template <class T, class Alloc>
 	bool	operator!=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {

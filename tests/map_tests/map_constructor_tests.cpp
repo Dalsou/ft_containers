@@ -87,7 +87,7 @@ void testConstructors()
 
              start = get_time();
              std::map<int, std::string> m;
-             for (int i = 0; i < 1000; ++i)
+             for (int i = 0; i < 100; ++i)
                  m.insert(std::make_pair(i, "fill constructor test"));
              end = get_time();
              diff = end - start;
@@ -96,7 +96,7 @@ void testConstructors()
              ualarm(diff * 1e3, 0);
 
              ft::map<int, std::string> my_m;
-             for (int i = 0; i < 1000; ++i)
+             for (int i = 0; i < 100; ++i)
                  my_m.insert(ft::make_pair(i, "fill constructor test"));
              ualarm(0, 0);
         }
@@ -127,7 +127,7 @@ void testConstructors()
              std::map<int, std::string> m;
              ft::map<int, std::string> my_m;
 
-             for (size_t i = 0; i < 1000; i++)
+             for (size_t i = 0; i < 100; i++)
              {
                  m.insert(std::make_pair(i, "range constructor test"));
                  my_m.insert(ft::make_pair(i, "range constructor test"));
@@ -186,7 +186,7 @@ void testConstructors()
             std::map<int, char> m;
             ft::map<int, char> my_m;
 
-            for (size_t i = 0; i < 10000; i++)
+            for (size_t i = 0; i < 100; i++)
             {
                 m.insert(std::make_pair(i, 'X'));
                 my_m.insert(ft::make_pair(i, 'X'));
@@ -230,7 +230,7 @@ void testConstructors()
              std::map<int, std::string> m2;
              ft::map<int, std::string> ft_m1;
              ft::map<int, std::string> ft_m2;
-             for (int i = 0; i < 1000; ++i)
+             for (int i = 0; i < 100; ++i)
              {
                  m1.insert(std::make_pair(i, "string1"));
                  m2.insert(std::make_pair(i, "string2"));
@@ -312,13 +312,13 @@ void testConstructors()
              ft::map<int, std::string> ft_m1;
              ft::map<int, std::string> ft_m2;
 
-             for (int i = 0; i < 1000; ++i)
+             for (int i = 0; i < 100; ++i)
              {
                  m1.insert(std::make_pair(i, "string1"));
                  ft_m1.insert(ft::make_pair(i, "string1"));
              }
 
-             for (int i = 0; i < 1000; ++i)
+             for (int i = 0; i < 100; ++i)
              {
                  m2.insert(std::make_pair(i, "string2"));
                  ft_m2.insert(ft::make_pair(i, "string2"));
@@ -376,13 +376,13 @@ void testConstructors()
              ft::map<int, std::string> ft_m1;
              ft::map<int, std::string> ft_m2;
 
-             for (int i = 0; i < 1000; ++i)
+             for (int i = 0; i < 100; ++i)
              {
                  m1.insert(std::make_pair(i, "string1"));
                  ft_m1.insert(ft::make_pair(i, "string1"));
              }
 
-             for (int i = 0; i < 1000; ++i)
+             for (int i = 0; i < 100; ++i)
              {
                  m2.insert(std::make_pair(i, "string2"));
                  ft_m2.insert(ft::make_pair(i, "string2"));
@@ -445,7 +445,7 @@ void testConstructors()
              ft::map<int, std::string> ft_m1;
              ft::map<int, std::string> ft_m2;
 
-             for (int i = 0; i < 1000; ++i)
+             for (int i = 0; i < 100; ++i)
              {
                  m2.insert(std::make_pair(i, "string2"));
                  ft_m2.insert(ft::make_pair(i, "string2"));
@@ -491,63 +491,5 @@ void testConstructors()
             ft_res += it->second;
 
         EQUAL(res == ft_res);
-    }
-    /*-------------------------------------------------------------------------------------------------------------------------------------------------------*/
-    /*------------------------------------------ test 5 : test with one empty vector ----------------------------------------------------------------------*/
-    TITLE("= operator (rhs.size = 0)");
-    {
-        /*-------------------------------------- time limit test -----------------------------------*/
-         {
-             time_t start, end, diff;
-             /*------------------ std::nap ---------------------*/
-             std::map<int, std::string> m1;
-             std::map<int, std::string> m2;
-             ft::map<int, std::string> ft_m1;
-             ft::map<int, std::string> ft_m2;
-
-             for (int i = 0; i < 10000; ++i)
-             {
-                 m1.insert(std::make_pair(i, "string1"));
-                 ft_m1.insert(ft::make_pair(i, "string1"));
-             }
-             start = get_time();
-             m1 = m2;
-             end = get_time();
-             diff = end - start;
-             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
-             /*-----------------------------------------------------*/
-             /*------------------ ft::map ---------------------*/
-             ualarm(diff * 1e3, 0);
-             ft_m1 = ft_m2;
-             ualarm(0, 0);
-             /*----------------------------------------------------*/
-         }
-        /*------------------------------------------------------------------------------------------*/
-        /*------------------ std::map ---------------------*/
-        std::map<int, std::string> m1;
-        std::map<int, std::string> m2;
-        ft::map<int, std::string> ft_m1;
-        ft::map<int, std::string> ft_m2;
-
-        for (int i = 0; i < 10; ++i)
-        {
-            m1.insert(std::make_pair(i, "string2"));
-            ft_m1.insert(ft::make_pair(i, "string2"));
-        }
-        m1 = m2;
-        /*-----------------------------------------------------*/
-        /*------------------ ft::map ---------------------*/
-        ft_m1 = ft_m2;
-        /*----------------------------------------------------*/
-        /*------------------ strings to store the results ----*/
-        std::string res, ft_res;
-        /*----------------------------------------------------*/
-        for (std::map<int, std::string>::iterator it = m1.begin(); it != m1.end(); ++it) // fill res from m1
-            res += it->second;
-        for (ft::map<int, std::string>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) { // fill ft_res from ft_m1
-            ft_res += it->second;
-            
-        }
-        EQUAL(res == ft_res);
-    }
+    }    
 }
