@@ -37,8 +37,6 @@ namespace ft {
 
 			template<class T1, class T2>
 			pair&	operator=(const pair<T1, T2>&op) {
-				if (this == &op)
-					return *this;
 				this->first = op.first;
 				this->second = op.second;
 				return *this;
