@@ -54,14 +54,6 @@ namespace ft {
                 return &(operator*());
             }
 
-            node_pointer    get_node() {
-                return this->_ptr;
-            }
-
-            node_pointer    get_node()  const {
-                return this->_ptr;
-            }
-
             operator rbtree_iterator<const T, node_pointer>() const {
                 return rbtree_iterator<const T, node_pointer>(this->_ptr);
             }
@@ -137,6 +129,19 @@ namespace ft {
                     }
                 }
             }
+		
+		protected:
+
+            node_pointer    get_node() {
+                return this->_ptr;
+            }
+
+            node_pointer    get_node()  const {
+                return this->_ptr;
+            }
+
+		template <class, class, class, class>
+		friend class map;
 
     }; // class rbtree_iterator
 

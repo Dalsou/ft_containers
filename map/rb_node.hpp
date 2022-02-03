@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 14:31:50 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/28 18:33:24 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/02/03 20:18:25 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,19 @@ namespace ft {
         ~rb_node() {}
 
     }; // struct rb_node
+
+	template <typename T>
+	rb_node<T>	*farRight(rb_node<T>* node) {
+		while (node->right != NULL)
+			node = node->right;
+		return (node);
+	}
+
+	template <typename T>
+	rb_node<T>	*farLeft(rb_node<T> *node) {
+		while (node->left != NULL)
+			node = node->left;
+		return (node);
+	}
 
 }

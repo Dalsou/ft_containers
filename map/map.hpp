@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 15:49:33 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/01/28 18:05:15 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/02/03 20:24:11 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ namespace ft {
 		// ******************** Constructors & Destructor ******************** //
 			
 			map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) : 
-			_allocator(alloc), _key_compare(comp), _size(0), _root(NULL) {}
+			_allocator(alloc), _key_compare(comp), _size(0), _root(NULL) {
+			}
 
         	template <class InputIterator>
         	map(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) :
@@ -102,13 +103,11 @@ namespace ft {
 			}
         
 			virtual ~map() { 
-				_clearTree(this->_root);
+				this->_clearTree(this->_root);
 			}
 
         	map& operator=(const map& op) {
-            	if (this == &op)
-					return *this;
-            	_clearTree(this->_root);
+            	this->_clearTree(this->_root);
             	insert(op.begin(), op.end());
             	return *this;
         	}
@@ -116,30 +115,22 @@ namespace ft {
 		// ******************** Iterators ******************** //
 
 			iterator begin() {
-        	    if (this->_size == 0)
-        	        return this->_root;
-
-        	    node_type* tmp = this->_root;
-
-        	    while (tmp && tmp->left)
-        	        tmp = tmp->left;
-        	    return iterator(tmp);
+        	    //if (!this->_root)
+        	        //this->_initialize();
+				if (this->_size == 0)
+        	        return this->_root; 
+				return iterator(farLeft(this->_root));
         	}
 
         	const_iterator begin() const {
-        	    if (this->_size == 0)
-        	        return (const_iterator(this->_root));
-
-        	    node_type *tmp = _root;
-
-        	    while (tmp && tmp->left)
-        	        tmp = tmp->left;
-        	    return const_iterator(tmp);
+				if (this->_size == 0)
+					return this->_root;
+				return const_iterator(farLeft(this->_root));
         	}
 
 			iterator end() {
-        	    if (!this->_root)
-        	        this->_initialize();
+        	    //if (!this->_root)
+        	        //this->_initialize();
         	    if (this->_size == 0)
         	        return this->_root; 
 
@@ -268,7 +259,14 @@ namespace ft {
         	}
 
 			void clear() {
-            	this->_setSize(0);
+            	node_type*	ghost = this->end().get_node();
+
+				if (this->_size == 0)
+					return;
+				ghost->parent->right = NULL;
+				this->_clearTree(this->_root);
+				this->_root = ghost;
+				this->_size = 0;
         	}
 
 		// ******************** Observers ******************** //
