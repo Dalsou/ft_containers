@@ -28,7 +28,7 @@ CFLAGS		=	-Wall -Wextra -Werror -std=c++98
 
 
 std: 		fclean $(OBJ_STD)
-				@$(CC) $(CFLAGS) -D TESTED_NAMESPACE=std $(OBJ_STD) -o $(NAME_STD)
+				@$(CC) $(CFLAGS) -D NS=std $(OBJ_STD) -o $(NAME_STD)
 				@echo "\n\t\033[36;1m*.............................*"
 				@echo "\n\t*       Compilation STD       *\t   \033[32;1m--------->>> \033[4;5mComplete\033[0m"
 				@echo "\n\t\033[036;1m*.............................*\033[0m\n"
@@ -41,7 +41,7 @@ ft: 		fclean $(OBJ_FT)
 
 $(OBJDIR_STD)/%.o: %.cpp
 					@mkdir -p $(OBJDIR_STD)
-					@$(CC) $(CFLAGS) -D TESTED_NAMESPACE=std -c $< -o $@
+					@$(CC) $(CFLAGS) -D NS=std -c $< -o $@
 
 $(OBJDIR_FT)/%.o: %.cpp
 					@mkdir -p $(OBJDIR_FT)
