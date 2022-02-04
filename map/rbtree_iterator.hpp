@@ -85,7 +85,8 @@ namespace ft {
         /* ------------------------ DECREMENT ----------------------- */
 
             rbtree_iterator& operator--() {
-                this->_decrease();
+				if (this->_ptr)
+                	this->_decrease();
                 return *this;
             }
 
@@ -130,15 +131,17 @@ namespace ft {
                 }
             }
 		
-		protected:
+		//protected:
 
-            node_pointer    get_node() {
-                return this->_ptr;
-            }
+		public:
 
-            node_pointer    get_node()  const {
-                return this->_ptr;
-            }
+		node_pointer    get_node() {
+            return this->_ptr;
+        }
+
+    	node_pointer    get_node()  const {
+            return this->_ptr;
+        }
 
 		template <class, class, class, class>
 		friend class map;

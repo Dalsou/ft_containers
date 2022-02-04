@@ -51,13 +51,15 @@ void	print_capacity(TESTED_NAMESPACE::vector<int> &v)
 {
 	std::cout << "CAPACITY\t" << v.capacity() << std::endl;
 }
+
 void	print_content(TESTED_NAMESPACE::map<int, int> &m)
 {
 	TESTED_NAMESPACE::map<int, int>::iterator	it = m.begin();
 	TESTED_NAMESPACE::map<int, int>::iterator	ite = m.end();
-	
+
 	TESTED_NAMESPACE::map<int, int>::reverse_iterator	rev = m.rbegin();
 	TESTED_NAMESPACE::map<int, int>::reverse_iterator	reve = m.rend();
+
 
 	std::cout << "Content :\n";
 	for (; it != ite; ++it)
@@ -277,7 +279,7 @@ void	stack()
 	std::cout << "EMPTY\t| Srcs: " << copy_stack.empty() << '\t' << "Copy: " << copy_stack.empty() << std::endl;
 	std::cout << "TOP\t| Srcs: " << copy_stack.top() << '\t' << "Copy: " << copy_stack.top() << std::endl;
 
-	//swap(stack, copy_stack);
+	swap(stack, copy_stack);
 
 	std::cout << "* After swap:\n";
 	std::cout << "SIZE\t| Srcs: " << stack.size() << '\t' << "Copy: " << copy_stack.size() << std::endl;
@@ -344,7 +346,8 @@ void	map()
 
 	std::cout << "\nempty map\n";
 	std::cout << "#################################\n";
-	//print_content(m); print_size(m);
+	print_content(m); 
+	print_size(m);
 
 	std::cout << "\ninsert(val)\n";
 	std::cout << "#################################\n";
@@ -423,7 +426,7 @@ void	map()
 
 	std::cout << "\nClear\n";
 	std::cout << "#################################\n";
-	//m_copy.clear();
+	m_copy.clear();
 	print_content(m_copy); print_size(m_copy);
 }
 

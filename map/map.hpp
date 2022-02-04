@@ -6,7 +6,7 @@
 /*   By: afoulqui <afoulqui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 15:49:33 by afoulqui          #+#    #+#             */
-/*   Updated: 2022/02/03 20:24:11 by afoulqui         ###   ########.fr       */
+/*   Updated: 2022/02/04 16:16:10 by afoulqui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,8 @@ namespace ft {
 		// ******************** Iterators ******************** //
 
 			iterator begin() {
-        	    //if (!this->_root)
-        	        //this->_initialize();
+				if (!this->_root)
+        	        this->_initialize();
 				if (this->_size == 0)
         	        return this->_root; 
 				return iterator(farLeft(this->_root));
@@ -129,11 +129,10 @@ namespace ft {
         	}
 
 			iterator end() {
-        	    //if (!this->_root)
-        	        //this->_initialize();
-        	    if (this->_size == 0)
+        	    if (!this->_root)
+        	        this->_initialize();
+				if (this->_size == 0)
         	        return this->_root; 
-
         	    node_type *tmp = this->_root;
         	    
 				while (tmp && !tmp->color)
@@ -153,19 +152,19 @@ namespace ft {
         	}
 
         	reverse_iterator rbegin() {
-        	    return reverse_iterator(end()--);
+        	    return reverse_iterator(this->end());
         	}
 
         	const_reverse_iterator rbegin() const {
-        	    return const_reverse_iterator(end()--);
+        	    return const_reverse_iterator(this->end());
         	}
 
         	reverse_iterator rend() {
-        	    return reverse_iterator(begin());
+        	    return reverse_iterator(this->begin());
         	}
 
         	const_reverse_iterator rend() const {
-        	    return const_reverse_iterator(begin());
+        	    return const_reverse_iterator(this->begin());
         	}
 
 	// 	// ******************** Capacity ******************** //
@@ -213,7 +212,7 @@ namespace ft {
         	//insert range
         	template <class InputIterator>
         	void insert(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last) {
-        	    while (first != last) {
+				while (first != last) {
         	        insert(*first);
         	        ++first;
         	    }
@@ -259,10 +258,10 @@ namespace ft {
         	}
 
 			void clear() {
-            	node_type*	ghost = this->end().get_node();
-
 				if (this->_size == 0)
 					return;
+				node_type*	ghost = this->end().get_node();
+				
 				ghost->parent->right = NULL;
 				this->_clearTree(this->_root);
 				this->_root = ghost;
@@ -282,20 +281,28 @@ namespace ft {
 		// ******************** Operations ******************** //
 		
        		iterator find(const key_type& k) {
-        	    node_type *tmp = this->_recursiveFindKey(k, this->_root);
+				iterator it = this->begin(), ite = this->end();
 
-        	    if (tmp)
-        	        return (iterator(tmp));
-        	    return this->end();
+				while (it != ite)
+				{
+					if (this->_key_eq(it->first, k))
+					break ;
+					++it;
+				}
+				return (it);
+        	    
         	}
 
         	const_iterator find(const key_type& k) const
         	{
-        	    node_type *tmp = this->_recursiveFindKey(k, this->_root);
+				const_iterator it = this->begin(), ite = this->end();
 
-        	    if (tmp)
-        	        return const_iterator(tmp);
-        	    return const_iterator(this->end());
+				while (it != ite) {
+					if (this->_key_eq(it->first, k))
+						break ;
+					++it;
+				}
+				return (it);
         	}
 
         	size_type count(const key_type& k) {
@@ -384,8 +391,8 @@ namespace ft {
 
         	void _clearTree(node_type* current) {
             	if (current) {
-                	_clearTree(current->left);
-                	_clearTree(current->right);
+                	this->_clearTree(current->left);
+                	this->_clearTree(current->right);
 
                 	this->_allocator.destroy(current);
                 	this->_allocator.deallocate(current, 1);
@@ -407,7 +414,8 @@ namespace ft {
         	void _initialize() {
         	    insert(value_type(key_type(), mapped_type()));
         	    this->_root->color = true;
-        	    this->_size--;
+				if (this->_size)
+        	    	this->_size--;
         	}
 
         	node_type* _insertNode(const value_type& val, node_type* current, node_type* parent) {
@@ -515,7 +523,7 @@ namespace ft {
 
         	node_type* _recursiveFindKey(const key_type &key, node_type *current) const {
         	    if (!current || current->color)
-        	        return NULL;
+					return NULL;
         	    if (this->_key_compare(key, current->value.first))
         	        return this->_recursiveFindKey(key, current->left);
         	    else if (this->_key_compare(current->value.first, key))
@@ -523,6 +531,10 @@ namespace ft {
         	    else
         	        return current;
         	}
+
+			bool _key_eq(const key_type &k1, const key_type &k2) const {
+				return (!this->_key_compare(k1, k2) && !this->_key_compare(k2, k1));
+			}
     };
 
     template <class Key, class T, class Compare, class Alloc>
