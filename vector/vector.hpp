@@ -13,9 +13,9 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-# include "../shared/utils.hpp"
-# include "../shared/random_iterator.hpp"
-# include "../shared/reverse_iterator.hpp"
+#include "../shared/utils.hpp"
+#include "vector_iterator.hpp"
+#include "../shared/reverse_iterator.hpp"
 
 namespace ft {
 
@@ -34,169 +34,12 @@ namespace ft {
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
 
-		// ******************** Iterator class ******************** //
 
-		class iterator : public random_iterator<value_type> {
-		
-			protected:
-				typedef random_iterator<value_type> iter;
-				iterator(value_type *src) : random_iterator<value_type>(src) {}
-		
-			private:
-				iterator(const random_iterator<value_type> &src) : random_iterator<value_type>(src) {}
-
-			public:
-				iterator() : random_iterator<value_type>() {};
-				iterator(const iterator &src) : random_iterator<value_type>(src) {}
-
-				typedef value_type&			reference;
-				typedef value_type*			pointer;
-
-				reference	operator*() const {
-					return *this->_value;
-				}
-
-				pointer	operator->() const {
-					return this->_value;
-				}
-
-				iterator&	operator+=(difference_type n) {
-					this->_value += n;
-					return *this;
-				}
-
-				iterator&	operator-=(difference_type n) {
-					this->_value -= n;
-					return *this;
-				}
-
-				reference	operator[](difference_type n) const {
-					return this->_value[n];
-				}
-
-				// Increment
-				iterator&	operator++() {
-					iter::operator++();
-					return *this;
-				}
-
-				iterator	operator++(int) {
-					return iter::operator++(0);
-				}
-
-				// Decrement
-				iterator&	operator--() {
-					iter::operator--();
-					return *this; 
-				}
-
-				iterator	operator--(int) {
-					return iter::operator--(0);
-				}
-
-				// Increment by n
-				iterator	operator+(difference_type n) const {
-					return iter::operator+(n);
-				}
-
-				// Decrement by n
-				iterator	operator-(difference_type n) const {
-					return iter::operator-(n);
-				}
-
-				difference_type	operator-(const random_iterator<value_type> &n) const { 
-					return iter::operator-(n);
-				}
-
-				friend iterator	operator+(difference_type n, const iterator &it) { 
-					return it.operator+(n);
-				}
-
-				friend class vector;
-			
-		}; // class iterator
-
-		// ******************** Const Iterator class ******************** //
-
-		class const_iterator : public random_iterator<value_type> {
-		
-			protected:
-				typedef random_iterator<value_type> iter;
-				const_iterator(value_type *src) : random_iterator<value_type>(src) {};
-		
-			public:
-				const_iterator() : random_iterator<value_type>() {};
-				const_iterator(const random_iterator<value_type> &src) : random_iterator<value_type>(src) {};
-
-				typedef const value_type&		reference;
-				typedef const value_type*		pointer;
-
-				reference	operator*() const {
-					return *this->_value;
-				}
-
-				pointer	operator->() const {
-					return this->_value;
-				}
-
-				const_iterator&	operator+=(difference_type n) {
-					this->_value += n;
-					return *this;
-				}
-
-				const_iterator&	operator-=(difference_type n) {
-					this->_value -= n;
-					return *this;
-				}
-
-				reference	operator[](difference_type n) const {
-					return this->_value[n];
-				}
-
-				// Increment				
-				const_iterator&	operator++() {
-					iter::operator++();
-					return *this;
-				}
-
-				const_iterator	operator++(int) {
-					return iter::operator++(0);
-				}
-
-				// Decrement
-				const_iterator&	operator--() {
-					iter::operator--();
-					return *this;
-				}
-
-				const_iterator	operator--(int) {
-					return iter::operator--(0);
-				}
-
-				// Increment by n
-				const_iterator	operator+(difference_type n) const {
-					return iter::operator+(n);
-				}
-
-				// Decrement by n
-				const_iterator	operator-(difference_type n) const {
-					return iter::operator-(n);
-				}
-				
-				difference_type	operator-(const random_iterator<value_type> &n) const {
-					return iter::operator-(n);
-				}
-
-				friend const_iterator	operator+(difference_type n, const const_iterator &it) {
-					return it.operator+(n);
-				}
-
-				friend class vector;
-
-		}; // class const_iterator
 
 		// ******************** Reverse & const reverse iterators ******************** //
 	
+			typedef ft::iterator<value_type>				iterator;
+			typedef ft::const_iterator<value_type>			const_iterator;
 			typedef ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
