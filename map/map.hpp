@@ -18,8 +18,8 @@
 #include <memory>
 
 #include "../shared/utils.hpp"
-#include "rb_node.hpp"
-#include "rbtree_iterator.hpp"
+#include "map_node.hpp"
+#include "map_iterator.hpp"
 #include "../shared/reverse_iterator.hpp"
 #include "pair.hpp"
 
@@ -38,7 +38,7 @@ namespace ft {
 			typedef T											mapped_type;
 			typedef ft::pair<const key_type, mapped_type>		value_type;
 			typedef Compare										key_compare;
-			typedef rb_node<value_type>							node_type;
+			typedef map_node<value_type>						node_type;
 			typedef Allocator									allocator_type;
 
 			class	binary_function {
@@ -70,8 +70,8 @@ namespace ft {
         	typedef typename allocator_type::const_pointer 						const_pointer;
         	typedef typename allocator_type::size_type 							size_type;
         	typedef typename allocator_type::difference_type 					difference_type;
-        	typedef rbtree_iterator<value_type, node_type *> 					iterator;
-        	typedef rbtree_iterator<const value_type, node_type *> 				const_iterator;
+        	typedef map_iterator<value_type, node_type *> 					iterator;
+        	typedef map_iterator<const value_type, node_type *> 				const_iterator;
         	typedef ft::reverse_iterator<iterator> 								reverse_iterator;
         	typedef ft::reverse_iterator<const_iterator> 						const_reverse_iterator;
 
@@ -119,13 +119,13 @@ namespace ft {
         	        this->_initialize();
 				if (this->_size == 0)
         	        return this->_root; 
-				return iterator(farLeft(this->_root));
+				return iterator(toTheLeft(this->_root));
         	}
 
         	const_iterator begin() const {
 				if (this->_size == 0)
 					return this->_root;
-				return const_iterator(farLeft(this->_root));
+				return const_iterator(toTheLeft(this->_root));
         	}
 
 			iterator end() {
@@ -135,18 +135,18 @@ namespace ft {
         	        return this->_root; 
         	    node_type *tmp = this->_root;
         	    
-				while (tmp && !tmp->color)
+				while (tmp && !tmp->last)
         	        tmp = tmp->right;
         	    return iterator(tmp);
         	}
 
         	const_iterator end() const {
         	    if (this->_size == 0)
-        	        return const_iterator(_root); 
+        	        return const_iterator(this->_root); 
 
         	    node_type *tmp = this->_root;
         	   
-			    while (tmp && !tmp->color)
+			    while (tmp && !tmp->last)
         	        tmp = tmp->right;
         	    return const_iterator(tmp);
         	}
@@ -189,7 +189,7 @@ namespace ft {
         	    if (tmp)
         	        return tmp->value.second;
         	    insert(value_type(k, mapped_type()));
-        	    return _recursiveFindKey(k, this->_root)->value.second;
+        	    return this->_recursiveFindKey(k, this->_root)->value.second;
         	}
 
 	// 	// ******************** Modifiers ******************** //
@@ -281,39 +281,43 @@ namespace ft {
 		// ******************** Operations ******************** //
 		
        		iterator find(const key_type& k) {
-				iterator it = this->begin(), ite = this->end();
+				iterator	it = this->begin();
+				iterator	ite = this->end();
 
 				while (it != ite)
 				{
-					if (this->_key_eq(it->first, k))
+					if (this->_keyEq(it->first, k))
 					break ;
 					++it;
 				}
-				return (it);
+				return it;
         	    
         	}
 
         	const_iterator find(const key_type& k) const
         	{
-				const_iterator it = this->begin(), ite = this->end();
+				const_iterator	it = this->begin();
+				const_iterator	ite = this->end();
 
 				while (it != ite) {
-					if (this->_key_eq(it->first, k))
+					if (this->_keyEq(it->first, k))
 						break ;
 					++it;
 				}
-				return (it);
+				return it;
         	}
 
         	size_type count(const key_type& k) {
-            	iterator tmp = this->find(k);
+            	iterator	tmp = this->find(k);
+
             	if (tmp != this->end())
                 	return 1;
             	return 0;
         	}
 
         	size_type	count(const key_type& k) const {
-            	const_iterator tmp = this->find(k);
+            	const_iterator	tmp = this->find(k);
+
             	if (tmp != this->end())
                 	return 1;
             	return 0;
@@ -328,7 +332,7 @@ namespace ft {
         	            return (it);
         	        it++;
         	    }
-        	    return (ite);
+        	    return ite;
         	}
 
 			const_iterator lower_bound(const key_type& k) const {
@@ -340,7 +344,7 @@ namespace ft {
         	            return (it);
         	        it++;
         	    }
-        	    return (ite);
+        	    return ite;
         	}
 
         	iterator upper_bound(const key_type &k) {
@@ -352,7 +356,7 @@ namespace ft {
         	            return (it);
         	        it++;
         	    }
-        	    return (ite);
+        	    return ite;
         	}
 
         	const_iterator upper_bound(const key_type &k) const {
@@ -364,7 +368,7 @@ namespace ft {
         	            return (it);
         	        it++;
         	    }
-        	    return (ite);
+        	    return ite;
         	}
 
 			pair<iterator, iterator> equal_range(const key_type& k) {
@@ -413,7 +417,7 @@ namespace ft {
 
         	void _initialize() {
         	    insert(value_type(key_type(), mapped_type()));
-        	    this->_root->color = true;
+        	    this->_root->last = true;
 				if (this->_size)
         	    	this->_size--;
         	}
@@ -421,7 +425,7 @@ namespace ft {
         	node_type* _insertNode(const value_type& val, node_type* current, node_type* parent) {
         	    if (!current)
         	        return this->_addNode(val, parent);
-        	    if (current->color) {
+        	    if (current->last) {
         	        node_type *to_insert = this->_addNode(val, parent);
         	        current->parent = to_insert;
         	        to_insert->right = current;
@@ -452,7 +456,7 @@ namespace ft {
         	}
 
         	node_type* _deleteNode(node_type* current, const key_type& key) {
-        	    if (!current || current->color)
+        	    if (!current || current->last)
         	        return current;
         	    if (this->_key_compare(key, current->value.first)) 
         	        current->left = this->_deleteNode(current->left, key);
@@ -507,10 +511,10 @@ namespace ft {
 
         	        this->_size--;
         	        this->_root->right = last;
-        	        last->color = true;
+        	        last->last = true;
         	        return (this->_root);
         	    }
-        	    if (this->_root->color) {
+        	    if (this->_root->last) {
         	        node_type *new_root = this->_addNode(val, NULL);
 
         	        this->_root->parent = new_root;
@@ -522,7 +526,7 @@ namespace ft {
         	}
 
         	node_type* _recursiveFindKey(const key_type &key, node_type *current) const {
-        	    if (!current || current->color)
+        	    if (!current || current->last)
 					return NULL;
         	    if (this->_key_compare(key, current->value.first))
         	        return this->_recursiveFindKey(key, current->left);
@@ -532,7 +536,7 @@ namespace ft {
         	        return current;
         	}
 
-			bool _key_eq(const key_type &k1, const key_type &k2) const {
+			bool _keyEq(const key_type &k1, const key_type &k2) const {
 				return (!this->_key_compare(k1, k2) && !this->_key_compare(k2, k1));
 			}
     };
